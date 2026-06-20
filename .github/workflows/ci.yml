@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check app.js
+      - name: Build static artifact
+        run: bash scripts/build_web.sh dist
+      - name: Audit release
+        run: python3 tools/boundary_run_audit.py
+      - name: Static smoke
+        run: node qa/boundary-run-static-smoke.mjs

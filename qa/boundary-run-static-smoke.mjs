@@ -1,0 +1,17 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const api = require('../app.js');
+if (api.VERSION !== '9.0.0') throw new Error('bad version');
+const e = new api.Engine('smoke-seed', ['C-04']);
+for (let i = 0; i < 40; i++) e.tickStep();
+e.action('seal');
+e.action('audit');
+e.action('right');
+for (let i = 0; i < 1400 && !e.finished; i++) e.tickStep();
+const proof = e.proof();
+if (proof.version !== 2) throw new Error('proof v2 missing');
+if (!proof.proof_hash || proof.proof_hash.length < 24) throw new Error('bad proof hash');
+const v = api.verifyProof(proof);
+if (!v.ok) throw new Error('proof verification failed');
+if (typeof proof.result.score !== 'number') throw new Error('bad score');
+console.log('Smoke OK:', proof.result.grade, proof.proof_hash.slice(0, 12));

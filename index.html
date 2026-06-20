@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05070c">
+  <title>Boundary Run v9.0.0 — The Little Signal</title>
+  <meta name="description" content="Play Boundary Run v9 — AxonOS Education browser serious game about cognitive privacy, safe intent, and deterministic replay proof.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">AxonOS Education · AG0001</span>
+        <h1>Boundary Run v9</h1>
+      </div>
+      <div class="version">v9.0.0</div>
+    </header>
+
+    <main class="stage">
+      <section id="menu" class="panel menu-panel" aria-live="polite">
+        <div class="hero-orb" aria-hidden="true"><span>Ari</span></div>
+        <h2>The Little Signal</h2>
+        <p class="lead">Ari is not carrying a thought. Ari is carrying a choice. Protect the choice. Protect the person.</p>
+        <label class="field-label">Seed</label>
+        <div class="seed-row">
+          <input id="seedInput" maxlength="64" value="daily" aria-label="Seed">
+          <button id="dailyBtn" type="button">Daily</button>
+        </div>
+        <div class="contracts">
+          <h3>Delivery Contracts <span>choose up to 2</span></h3>
+          <div id="contractList" class="contract-list"></div>
+        </div>
+        <button id="runBtn" class="run-btn" type="button">▶ RUN GAME</button>
+        <p class="disclaimer">Educational simulation. Not a medical device. No real neural data. No telemetry.</p>
+      </section>
+
+      <section id="game" class="game-panel hidden" aria-label="Boundary Run game">
+        <canvas id="gameCanvas" width="1280" height="720"></canvas>
+        <div class="hud" aria-live="polite">
+          <div><span>Integrity</span><b id="hudIntegrity">100</b></div>
+          <div><span>Leakage</span><b id="hudLeakage">0</b></div>
+          <div><span>Consent</span><b id="hudConsent">100</b></div>
+          <div><span>Latency</span><b id="hudLatency">0</b></div>
+          <div><span>Trust</span><b id="hudTrust">75</b></div>
+          <div><span>Shards</span><b id="hudShards">0</b></div>
+        </div>
+        <div class="weather" id="weatherPanel">Weather: stable</div>
+        <div class="coach" id="coach">Kibo is watching the boundary.</div>
+        <div class="actions">
+          <button data-action="audit">Audit</button>
+          <button data-action="revoke">Revoke</button>
+          <button data-action="throttle">Throttle</button>
+          <button data-action="seal">Seal</button>
+          <button data-action="quarantine">Quarantine</button>
+        </div>
+      </section>
+
+      <section id="report" class="panel report-panel hidden" aria-live="polite">
+        <h2 id="reportTitle">Intent Delivered</h2>
+        <div id="portrait" class="portrait"></div>
+        <p id="reportLine" class="lead"></p>
+        <div class="report-grid">
+          <div><span>Grade</span><b id="reportGrade">A</b></div>
+          <div><span>Score</span><b id="reportScore">0</b></div>
+          <div><span>Integrity</span><b id="reportIntegrity">0</b></div>
+          <div><span>Proof</span><b id="reportHash">—</b></div>
+        </div>
+        <textarea id="proofBox" readonly aria-label="Replay proof JSON"></textarea>
+        <div class="report-actions">
+          <button id="copyProofBtn" type="button">Copy Proof</button>
+          <button id="verifyProofBtn" type="button">Verify Proof</button>
+          <button id="againBtn" type="button">Run Again</button>
+          <button id="menuBtn" type="button">Menu</button>
+        </div>
+        <p id="verifyLine" class="verify-line"></p>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
