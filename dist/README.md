@@ -1,4 +1,4 @@
-# Boundary Run v9.0.1 — The Little Signal
+# Boundary Run v9.0.2 — The Little Signal
 
 <p align="center">
   <a href="https://axonos-bci.github.io/axonos-boundary-run-v9/?v=901">
@@ -22,7 +22,7 @@ Ari is not carrying a thought. Ari is carrying a choice.
 
 > Protect the choice. Protect the person.
 
-## v9.0.1 Foundation Features
+## v9.0.2 Foundation Features
 
 - Seeded deterministic level generation.
 - Delivery Contracts: Zero Trust, Minimal Surface, No Throttle, Full Audit, Sealed Envelope.
@@ -34,7 +34,7 @@ Ari is not carrying a thought. Ari is carrying a choice.
 - Static browser build.
 - No telemetry.
 - No backend.
-- No service worker in v9.0.1.
+- No service worker in v9.0.2.
 
 ## Play
 

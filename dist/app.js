@@ -1,7 +1,7 @@
 (function (root) {
   "use strict";
 
-  const VERSION = "9.0.1";
+  const VERSION = "9.0.2";
   const MAX_SEED_LEN = 64;
   const LOGICAL_W = 1280;
   const COLLISION_LEFT_RATIO = 44 / LOGICAL_W;
@@ -118,10 +118,8 @@
     setLane(next) {
       const old = this.lane;
       this.lane = clamp(next, 0, 2);
-      if (old !== this.lane) {
-        if (this.lane === 1 || old === 1) this.centerCrossings++;
-        this.record(this.lane < old ? "left" : "right", this.lane);
-      }
+      // movement is recorded once in action(); setLane only mutates state
+      if (old !== this.lane && (this.lane === 1 || old === 1)) this.centerCrossings++;
     }
     branchChoice(kind) {
       if (this.branchEvent) return;

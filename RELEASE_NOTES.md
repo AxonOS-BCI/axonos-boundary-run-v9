@@ -1,23 +1,16 @@
-# Release Notes — Boundary Run v9.0.1
+# Release Notes — Boundary Run v9.0.2
 
 ## Summary
 
-Boundary Run v9.0.1 is the security and determinism hardening release for the new `axonos-boundary-run-v9` repository.
+v9.0.2 fixes a replay-verification false negative. Movement commands (`left` / `right`)
+were recorded twice per key press, so re-simulation moved the lane one step too far and
+diverged from the live run — `verifyProof` then rejected even legitimate proofs with
+"replay mismatch". Movement is now recorded exactly once in `action()`; `setLane` only
+mutates state. Verification now passes for legitimate runs and still rejects forged
+results via re-simulation.
 
-It fixes the v9.0.0 release blockers found in audit:
-
-- SHA-256 proof hash via Web Crypto API / Node crypto fallback.
-- Replay-based proof verification, not only static hash comparison.
-- Stable Boundary weather is reachable.
-- Integer-only gameplay progression for deterministic distance and spawn logic.
-- Explicit seed validation.
-- Explicit maximum of two delivery contracts.
-- Jump and duck are mutually exclusive.
-- Collision window is normalized to logical canvas width.
-- Mobile touch handlers prevent page scrolling.
-- CSP added to `index.html`.
-- CI/CD release gates added and expanded.
-- Accessibility baseline: canvas label, ARIA live status, region labels, screen-reader status node.
+Builds on v9.0.1 (SHA-256 `proof_hash` via Web Crypto with a Node fallback, stable key
+ordering for hashing, and replay-based `verifyProof`).
 
 ## Release posture
 
@@ -26,7 +19,7 @@ It fixes the v9.0.0 release blockers found in audit:
 - No real neural data.
 - No telemetry.
 - No backend.
-- No service worker in v9.0.1.
+- No service worker in v9.0.2.
 
 ## Verification
 
@@ -34,12 +27,4 @@ It fixes the v9.0.0 release blockers found in audit:
 bash scripts/build_web.sh dist
 python3 tools/boundary_run_audit.py
 node qa/boundary-run-static-smoke.mjs
-```
-
-Expected output:
-
-```text
-Build OK: Boundary Run v9.0.1 -> dist
-Audit OK: v9.0.1 security, deterministic hardening, CI/CD and no stale markers
-Smoke OK: v9.0.1 proof replay, contracts, seed validation, weather reachability
 ```

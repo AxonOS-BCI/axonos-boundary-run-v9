@@ -16,7 +16,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   return proof;
 }
 
-if (api.VERSION !== '9.0.1') throw new Error('bad version');
+if (api.VERSION !== '9.0.2') throw new Error('bad version');
 if (!api.WEATHER.includes('Stable Boundary')) throw new Error('Stable Boundary missing');
 
 // Stable Boundary must be reachable for at least one deterministic seed.
@@ -46,4 +46,17 @@ const cases = [
 ];
 for (const c of cases) await assertRun(c[0], c[1], c[2]);
 
-console.log('Smoke OK: v9.0.1 proof replay, contracts, seed validation, weather reachability');
+// Regression (v9.0.2): movement must be recorded once, so replay matches the live run.
+{
+  const e = new api.Engine('replay-move', []);
+  const sc = { 20: ['right'], 40: ['left'], 60: ['right'], 80: ['left'], 120: ['left'], 122: ['right'] };
+  let g = 0;
+  while (!e.finished && g++ < 5000) { const cs = sc[e.tick]; if (cs) for (const a of cs) e.action(a); e.tickStep(); }
+  const pr = await e.proof();
+  const vv = await api.verifyProof(pr);
+  if (!vv.ok) throw new Error('replay-after-movement failed: ' + vv.reason);
+  const mv = pr.inputs.filter(i => i.a === 'left' || i.a === 'right');
+  for (let i = 1; i < mv.length; i++) if (mv[i].t === mv[i - 1].t && mv[i].a === mv[i - 1].a) throw new Error('duplicate movement input recorded at tick ' + mv[i].t);
+}
+
+console.log('Smoke OK: v9.0.2 proof replay, contracts, seed validation, weather reachability');
