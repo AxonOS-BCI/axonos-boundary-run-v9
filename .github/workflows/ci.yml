@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  boundary-run-release-gates:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check app.js
+      - name: Build static artifact
+        run: bash scripts/build_web.sh dist
+      - name: Audit release
+        run: python3 tools/boundary_run_audit.py
+      - name: Static smoke
+        run: node qa/boundary-run-static-smoke.mjs
+      - name: Forbidden network and stale markers
+        run: |
+          ! grep -R "fetch(\|XMLHttpRequest\|sendBeacon\|serviceWorker.register\|gtag(\|v9.0.0\|v8.8.4\|v8.0.1\|v7.9.812\|v7.3.0\|ABI v3" index.html app.js styles.css README.md PRIVACY_NOTICE.md SECURITY.md TERMS_OF_USE.md CRYPTO_PAYMENT_TERMS.md
