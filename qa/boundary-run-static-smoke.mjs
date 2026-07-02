@@ -16,7 +16,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   return proof;
 }
 
-if (api.VERSION !== '9.0.2') throw new Error('bad version');
+if (api.VERSION !== '9.1.0') throw new Error('bad version');
 if (!api.WEATHER.includes('Stable Boundary')) throw new Error('Stable Boundary missing');
 
 // Stable Boundary must be reachable for at least one deterministic seed.
@@ -59,4 +59,4 @@ for (const c of cases) await assertRun(c[0], c[1], c[2]);
   for (let i = 1; i < mv.length; i++) if (mv[i].t === mv[i - 1].t && mv[i].a === mv[i - 1].a) throw new Error('duplicate movement input recorded at tick ' + mv[i].t);
 }
 
-console.log('Smoke OK: v9.0.2 proof replay, contracts, seed validation, weather reachability');
+console.log('Smoke OK: v9.1.0 proof replay, contracts, seed validation, weather reachability');

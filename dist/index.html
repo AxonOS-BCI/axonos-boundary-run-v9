@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#05070c">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Boundary Run v9.0.2 — The Little Signal</title>
+  <title>Boundary Run v9.1.0 — The Little Signal</title>
   <meta name="description" content="Play Boundary Run v9 — AxonOS Education browser serious game about cognitive privacy, safe intent, and deterministic replay proof.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,7 +16,11 @@
         <span class="eyebrow">AxonOS Education · AG0001</span>
         <h1>Boundary Run v9</h1>
       </div>
-      <div class="version">v9.0.2</div>
+      <div class="top-actions">
+        <button id="muteBtn" class="chip-btn" type="button" aria-label="Toggle sound" aria-pressed="false">🔊 Sound</button>
+        <button id="pauseBtn" class="chip-btn hidden" type="button" aria-label="Pause game">⏸ Pause</button>
+        <div class="version">v9.1.0</div>
+      </div>
     </header>
 
     <main class="stage">
@@ -24,13 +28,21 @@
         <div class="hero-orb" aria-hidden="true"><span>Ari</span></div>
         <h2>The Little Signal</h2>
         <p class="lead">Ari is not carrying a thought. Ari is carrying a choice. Protect the choice. Protect the person.</p>
-        <label class="field-label">Seed</label>
+        <div class="howto" aria-label="Controls">
+          <span><b>◀ ▶</b> switch lane</span>
+          <span><b>▲</b> jump spikes</span>
+          <span><b>▼</b> duck beams</span>
+          <span><b>1–5</b> abilities</span>
+          <span><b>swipe</b> on touch</span>
+          <span><b>P</b> pause · <b>M</b> mute</span>
+        </div>
+        <label class="field-label" for="seedInput">Seed</label>
         <div class="seed-row">
           <input id="seedInput" maxlength="64" value="daily" aria-label="Seed">
           <button id="dailyBtn" type="button">Daily</button>
         </div>
         <div class="contracts">
-          <h3>Delivery Contracts <span>choose up to 2</span></h3>
+          <h3>Delivery Contracts <span>choose up to 2 — higher risk, higher score</span></h3>
           <div id="contractList" class="contract-list"></div>
         </div>
         <button id="runBtn" class="run-btn" type="button">▶ RUN GAME</button>
@@ -39,37 +51,55 @@
 
       <section id="game" class="game-panel hidden" aria-label="Boundary Run game">
         <canvas id="gameCanvas" width="1280" height="720" role="img" aria-label="Boundary Run game field. Use arrows or swipe to move Ari across three lanes.">Your browser needs Canvas to play Boundary Run.</canvas>
-        <div class="hud" aria-live="polite">
-          <div><span>Integrity</span><b id="hudIntegrity">100</b></div>
-          <div><span>Leakage</span><b id="hudLeakage">0</b></div>
-          <div><span>Consent</span><b id="hudConsent">100</b></div>
-          <div><span>Latency</span><b id="hudLatency">0</b></div>
-          <div><span>Trust</span><b id="hudTrust">75</b></div>
-          <div><span>Shards</span><b id="hudShards">0</b></div>
+        <div class="hud" aria-live="off">
+          <div class="stat integrity"><div class="row"><span>Integrity</span><b id="hudIntegrity">100</b></div><div class="bar"><i id="barIntegrity"></i></div></div>
+          <div class="stat leakage"><div class="row"><span>Leakage</span><b id="hudLeakage">0</b></div><div class="bar"><i id="barLeakage"></i></div></div>
+          <div class="stat consent"><div class="row"><span>Consent</span><b id="hudConsent">100</b></div><div class="bar"><i id="barConsent"></i></div></div>
+          <div class="stat trust"><div class="row"><span>Trust</span><b id="hudTrust">75</b></div><div class="bar"><i id="barTrust"></i></div></div>
+          <div class="stat mini"><div class="row"><span>Latency</span><b id="hudLatency">0</b></div></div>
+          <div class="stat mini"><div class="row"><span>◆ Shards</span><b id="hudShards">0</b></div></div>
+          <div class="stat mini"><div class="row"><span>⚿ Keys</span><b id="hudKeys">2</b></div></div>
         </div>
-        <div class="weather" id="weatherPanel">Weather: stable</div>
+        <div class="weather" id="weatherPanel" aria-label="Neural weather"></div>
         <div class="coach" id="coach">Kibo is watching the boundary.</div>
         <div id="liveStatus" class="sr-only" role="status" aria-live="polite">Kibo is watching the boundary.</div>
-        <div class="actions">
-          <button data-action="audit">Audit</button>
-          <button data-action="revoke">Revoke</button>
-          <button data-action="throttle">Throttle</button>
-          <button data-action="seal">Seal</button>
-          <button data-action="quarantine">Quarantine</button>
+        <div id="branchOverlay" class="branch-overlay hidden" role="dialog" aria-label="Moral branch choice">
+          <h3>Moral branch ahead</h3>
+          <p>Choose Ari's path through the boundary — or the seed decides for you.</p>
+          <div class="branch-opts">
+            <button type="button" class="b-safe" data-branch="safe"><b>Safe Lane</b><small>+integrity · privacy-by-design · slower</small></button>
+            <button type="button" class="b-fast" data-branch="fast"><b>Fast Lane</b><small>+12 shards · −integrity · faster, riskier</small></button>
+            <button type="button" class="b-audit" data-branch="audit"><b>Audit Lane</b><small>counts as an audit · every gate checked</small></button>
+          </div>
+        </div>
+        <div id="swipeHint" class="swipe-hint hidden">swipe ◀ ▶ to move · ▲ jump · ▼ duck</div>
+        <div id="pauseVeil" class="veil hidden"><div class="card"><h3>Paused</h3><p>Press P or tap Resume to continue.</p></div></div>
+        <div class="actions" role="toolbar" aria-label="Abilities">
+          <button data-action="audit"><span class="key">1</span><span class="glyph">🔎</span><span class="name">Audit</span></button>
+          <button data-action="revoke"><span class="key">2</span><span class="glyph">✋</span><span class="name">Revoke</span></button>
+          <button data-action="throttle"><span class="key">3</span><span class="glyph">🐢</span><span class="name">Throttle</span></button>
+          <button data-action="seal"><span class="key">4</span><span class="glyph">🛡</span><span class="name">Seal</span></button>
+          <button data-action="quarantine"><span class="key">5</span><span class="glyph">📦</span><span class="name">Quarantine</span></button>
         </div>
       </section>
 
       <section id="report" class="panel report-panel hidden" aria-live="polite" role="region" aria-label="Run report">
+        <div id="medallion" class="medallion" aria-hidden="true">A</div>
         <h2 id="reportTitle">Intent Delivered</h2>
-        <div id="portrait" class="portrait"></div>
         <p id="reportLine" class="lead"></p>
+        <div id="portrait" class="portrait"></div>
         <div class="report-grid">
           <div><span>Grade</span><b id="reportGrade">A</b></div>
           <div><span>Score</span><b id="reportScore">0</b></div>
           <div><span>Integrity</span><b id="reportIntegrity">0</b></div>
           <div><span>Proof</span><b id="reportHash">—</b></div>
         </div>
-        <textarea id="proofBox" readonly aria-label="Replay proof JSON"></textarea>
+        <p id="sessionBest" class="session-best hidden"></p>
+        <div id="violations" class="violations hidden"></div>
+        <details class="proof">
+          <summary>Replay proof JSON — copy or verify</summary>
+          <textarea id="proofBox" readonly aria-label="Replay proof JSON"></textarea>
+        </details>
         <div class="report-actions">
           <button id="copyProofBtn" type="button">Copy Proof</button>
           <button id="verifyProofBtn" type="button">Verify Proof</button>
