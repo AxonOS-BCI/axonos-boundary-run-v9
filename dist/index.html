@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#05070c">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Boundary Run v9.1.0 — The Little Signal</title>
+  <title>Boundary Run v9.2.0 — The Little Signal</title>
   <meta name="description" content="Play Boundary Run v9 — AxonOS Education browser serious game about cognitive privacy, safe intent, and deterministic replay proof.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,7 +19,7 @@
       <div class="top-actions">
         <button id="muteBtn" class="chip-btn" type="button" aria-label="Toggle sound" aria-pressed="false">🔊 Sound</button>
         <button id="pauseBtn" class="chip-btn hidden" type="button" aria-label="Pause game">⏸ Pause</button>
-        <div class="version">v9.1.0</div>
+        <div class="version">v9.2.0</div>
       </div>
     </header>
 
@@ -33,7 +33,8 @@
           <span><b>▲</b> jump spikes</span>
           <span><b>▼</b> duck beams</span>
           <span><b>1–5</b> abilities</span>
-          <span><b>swipe</b> on touch</span>
+          <span><b>touch:</b> pads · tap sides · swipe ▲▼</span>
+          <span><b>graze</b> hazards → ×flow</span>
           <span><b>P</b> pause · <b>M</b> mute</span>
         </div>
         <label class="field-label" for="seedInput">Seed</label>
@@ -47,6 +48,11 @@
         </div>
         <button id="runBtn" class="run-btn" type="button">▶ RUN GAME</button>
         <p class="disclaimer">Educational simulation. Not a medical device. No real neural data. No telemetry.</p>
+        <div class="donate" aria-label="Support with Dogecoin">
+          <span>Enjoying it? Support with DOGE:</span>
+          <code>DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp</code>
+          <button type="button" class="doge-copy">Copy</button>
+        </div>
       </section>
 
       <section id="game" class="game-panel hidden" aria-label="Boundary Run game">
@@ -59,8 +65,10 @@
           <div class="stat mini"><div class="row"><span>Latency</span><b id="hudLatency">0</b></div></div>
           <div class="stat mini"><div class="row"><span>◆ Shards</span><b id="hudShards">0</b></div></div>
           <div class="stat mini"><div class="row"><span>⚿ Keys</span><b id="hudKeys">2</b></div></div>
+          <div class="stat mini"><div class="row"><span>Sector</span><b id="hudSector">1/5</b></div></div>
         </div>
         <div class="weather" id="weatherPanel" aria-label="Neural weather"></div>
+        <div id="comboPill" class="combo-pill hidden" aria-live="off">×2 flow</div>
         <div class="coach" id="coach">Kibo is watching the boundary.</div>
         <div id="liveStatus" class="sr-only" role="status" aria-live="polite">Kibo is watching the boundary.</div>
         <div id="branchOverlay" class="branch-overlay hidden" role="dialog" aria-label="Moral branch choice">
@@ -72,14 +80,24 @@
             <button type="button" class="b-audit" data-branch="audit"><b>Audit Lane</b><small>counts as an audit · every gate checked</small></button>
           </div>
         </div>
-        <div id="swipeHint" class="swipe-hint hidden">swipe ◀ ▶ to move · ▲ jump · ▼ duck</div>
+        <div id="swipeHint" class="swipe-hint hidden">tap sides ◀ ▶ · swipe ▲ ▼ · or use the pads</div>
+        <div id="touchPads" class="touch-pads hidden" aria-label="Touch controls">
+          <div class="pad-cluster left">
+            <button type="button" data-move="left" aria-label="Move left">◀</button>
+            <button type="button" data-move="right" aria-label="Move right">▶</button>
+          </div>
+          <div class="pad-cluster right">
+            <button type="button" data-move="jump" aria-label="Jump">▲</button>
+            <button type="button" data-move="duck" aria-label="Duck">▼</button>
+          </div>
+        </div>
         <div id="pauseVeil" class="veil hidden"><div class="card"><h3>Paused</h3><p>Press P or tap Resume to continue.</p></div></div>
         <div class="actions" role="toolbar" aria-label="Abilities">
           <button data-action="audit"><span class="key">1</span><span class="glyph">🔎</span><span class="name">Audit</span></button>
           <button data-action="revoke"><span class="key">2</span><span class="glyph">✋</span><span class="name">Revoke</span></button>
           <button data-action="throttle"><span class="key">3</span><span class="glyph">🐢</span><span class="name">Throttle</span></button>
-          <button data-action="seal"><span class="key">4</span><span class="glyph">🛡</span><span class="name">Seal</span></button>
-          <button data-action="quarantine"><span class="key">5</span><span class="glyph">📦</span><span class="name">Quarantine</span></button>
+          <button data-action="seal"><span class="key">4</span><span class="glyph">🛡</span><span class="name">Seal</span><span class="charge">2</span></button>
+          <button data-action="quarantine"><span class="key">5</span><span class="glyph">📦</span><span class="name">Quarantine</span><span class="charge">2</span></button>
         </div>
       </section>
 
@@ -93,13 +111,22 @@
           <div><span>Score</span><b id="reportScore">0</b></div>
           <div><span>Integrity</span><b id="reportIntegrity">0</b></div>
           <div><span>Proof</span><b id="reportHash">—</b></div>
+          <div><span>Flow max</span><b id="reportCombo">×0</b></div>
+          <div><span>Grazes</span><b id="reportGrazes">0</b></div>
+          <div><span>Sector</span><b id="reportSector">1/5</b></div>
         </div>
+        <p id="setpieces" class="setpieces"></p>
         <p id="sessionBest" class="session-best hidden"></p>
         <div id="violations" class="violations hidden"></div>
         <details class="proof">
           <summary>Replay proof JSON — copy or verify</summary>
           <textarea id="proofBox" readonly aria-label="Replay proof JSON"></textarea>
         </details>
+        <div class="donate" aria-label="Support with Dogecoin">
+          <span>Support the project · DOGE:</span>
+          <code>DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp</code>
+          <button type="button" class="doge-copy">Copy</button>
+        </div>
         <div class="report-actions">
           <button id="copyProofBtn" type="button">Copy Proof</button>
           <button id="verifyProofBtn" type="button">Verify Proof</button>

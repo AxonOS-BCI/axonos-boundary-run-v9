@@ -1,0 +1,190 @@
+{
+  "version": 3,
+  "game": "Boundary Run v9",
+  "release": "9.2.0",
+  "seed": "golden-flow",
+  "config": {
+    "contracts": [],
+    "weather": [
+      "Data Gravity",
+      "Stale Consent"
+    ]
+  },
+  "inputs": [
+    {
+      "t": 279,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 315,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 360,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 459,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 503,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 504,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 668,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 711,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 768,
+      "a": "branch_choice",
+      "data": "Safe Lane"
+    },
+    {
+      "t": 828,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 837,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 846,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 909,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 948,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 981,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1064,
+      "a": "throttle",
+      "data": null
+    },
+    {
+      "t": 1260,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1261,
+      "a": "revoke",
+      "data": null
+    },
+    {
+      "t": 1377,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1404,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1404,
+      "a": "seal",
+      "data": null
+    },
+    {
+      "t": 1413,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1494,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1534,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1539,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1575,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1673,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1674,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1782,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1782,
+      "a": "seal",
+      "data": null
+    }
+  ],
+  "branch_event": {
+    "distance": 222720,
+    "choice": "Safe Lane"
+  },
+  "result": {
+    "shards": 89,
+    "integrity_bp": 15,
+    "leakage_bp": 75,
+    "consent_bp": 60,
+    "trust_bp": 56,
+    "score": 1554,
+    "grade": "D",
+    "time_ms": 30948.762,
+    "ticks": 1857,
+    "distance_cm": 484080,
+    "corruption_level": 3,
+    "branch": "Safe Lane",
+    "combo_max": 10,
+    "grazes": 24,
+    "sector_reached": 5,
+    "swarm": "hit",
+    "gate": "clean",
+    "violations": []
+  },
+  "proof_hash": "56e5d0419cc3bd42bc43725a9cbe7b9704ba77a3995ac41cb2d3a43f3ff55241"
+}

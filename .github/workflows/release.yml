@@ -1,0 +1,70 @@
+name: Release
+
+# Tags become Release objects automatically — the same mechanization the
+# radar adopted after the "sidebar still shows an old version" class: the
+# sidebar shows Release OBJECTS, and creating them must never depend on a
+# human remembering a token-bearing curl.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (back)release, e.g. v9.2.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Resolve tag
+        id: tag
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || { echo "no such tag: $TAG"; exit 1; }
+          git checkout -q "refs/tags/$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Release body from RELEASE_NOTES
+        run: |
+          python3 - "${{ steps.tag.outputs.tag }}" <<'PY'
+          import re, sys
+          ver = sys.argv[1].lstrip("v")
+          t = open("RELEASE_NOTES.md", encoding="utf-8").read()
+          m = re.search(rf"^## v{re.escape(ver)}[^\n]*\n(.*?)(?=^## v|\Z)", t, re.M | re.S)
+          body = m.group(1).strip() if m else f"Boundary Run {sys.argv[1]}. See RELEASE_NOTES.md."
+          open("BODY.md", "w", encoding="utf-8").write(body + "\n")
+          print(f"body {len(body)} chars ({'notes' if m else 'fallback'})")
+          PY
+      - name: Create Release (idempotent; Latest only for current VERSION)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "release $TAG exists — nothing to do"; exit 0
+          fi
+          CURRENT="v$(tr -d '[:space:]' < VERSION)"
+          LATEST=$([ "$TAG" = "$CURRENT" ] && echo "--latest" || echo "--latest=false")
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --title "Boundary Run $TAG — The Little Signal" \
+            --notes-file BODY.md $LATEST
+      - name: Verify the Release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,isLatest \
+            --jq '"verified: " + .tagName + " latest=" + (.isLatest | tostring)'

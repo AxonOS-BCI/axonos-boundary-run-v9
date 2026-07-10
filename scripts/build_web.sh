@@ -14,5 +14,5 @@ grep -q "Ari" "$DIST/index.html"
 grep -q "Content-Security-Policy" "$DIST/index.html"
 grep -q "SHA-256" "$DIST/app.js"
 grep -q "RUN GAME" README.md
-! grep -R "v7.9.812\|v8.0.1\|v8.8.4\|v9.0.0\|v7.3.0\|ABI v3\|unstick-ui\|serviceWorker.register\|gtag" "$DIST"
-echo "Build OK: Boundary Run v9.1.0 -> $DIST"
+! grep -R "v7.9.812\|v8.0.1\|v8.8.4\|v9.0.0\|v9.1.0\|v7.3.0\|ABI v3\|unstick-ui\|serviceWorker.register\|gtag" "$DIST"
+echo "Build OK: Boundary Run v9.2.0 -> $DIST"

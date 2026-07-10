@@ -1,4 +1,4 @@
-/* Boundary Run v9.1.0 — premium presentation layer.
+/* Boundary Run v9.2.0 — premium presentation layer.
    Copyright (c) 2026 Denis Yermakou / AxonOS. Apache-2.0 OR MIT. */
 
 :root {
@@ -359,3 +359,29 @@ details.proof[open] summary::before { content: "\25BE "; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ── v9.2.0: flow combo, ability economy, set-piece report ── */
+.combo-pill{position:absolute;top:14px;right:16px;z-index:4;font:800 15px Inter,system-ui,sans-serif;color:#87ffb5;background:rgba(10,20,16,.72);border:1px solid rgba(135,255,181,.45);border-radius:999px;padding:5px 13px;letter-spacing:.04em;box-shadow:0 0 18px rgba(135,255,181,.25);animation:pillIn .18s ease-out}
+.combo-pill.hot{color:#6af6ff;border-color:rgba(106,246,255,.55);box-shadow:0 0 22px rgba(106,246,255,.35)}
+@keyframes pillIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.actions button{position:relative;overflow:hidden}
+.actions button .charge{position:absolute;top:4px;right:6px;font:800 11px "JetBrains Mono",ui-monospace,monospace;color:#ffd978;background:rgba(0,0,0,.4);border-radius:8px;padding:1px 6px}
+.actions button.cooling{opacity:.85}
+.actions button.cooling::after{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--cd,0)*100%);background:rgba(5,7,12,.62);border-top:1px solid rgba(106,246,255,.35);pointer-events:none}
+.medallion.s{background:conic-gradient(from 210deg,#6af6ff,#87ffb5,#ffd978,#6af6ff);color:#06121c;box-shadow:0 0 34px rgba(106,246,255,.55),0 0 60px rgba(135,255,181,.3)}
+.setpieces{margin:2px 0 0;font:700 13px Inter,system-ui,sans-serif;color:#9aa7bd}
+.setpieces.good{color:#87ffb5}
+.setpieces.bad{color:#ff7b97}
+@media (prefers-reduced-motion: reduce){.combo-pill{animation:none}}
+
+/* ── v9.2.0: touch pads + DOGE donate ── */
+.touch-pads{position:absolute;inset:auto 0 86px 0;z-index:5;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
+.pad-cluster{display:flex;gap:10px;pointer-events:auto}
+.pad-cluster.right{flex-direction:column}
+.touch-pads button{width:64px;height:64px;border-radius:18px;border:1px solid rgba(106,246,255,.35);background:rgba(10,16,28,.55);color:#bfefff;font-size:24px;font-weight:800;touch-action:none;user-select:none;-webkit-user-select:none;backdrop-filter:blur(3px);box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.touch-pads button:active{background:rgba(106,246,255,.28);transform:scale(.94)}
+@media (min-width:900px){.touch-pads button{width:72px;height:72px}}
+.donate{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;border:1px dashed rgba(255,217,120,.4);border-radius:12px;background:rgba(255,217,120,.05);font:600 12.5px Inter,system-ui,sans-serif;color:#e8dfc6}
+.donate code{font:700 11.5px "JetBrains Mono",ui-monospace,monospace;color:#ffd978;word-break:break-all;background:rgba(0,0,0,.35);padding:3px 7px;border-radius:8px}
+.donate .doge-copy{border:1px solid rgba(255,217,120,.5);background:rgba(255,217,120,.12);color:#ffd978;border-radius:9px;padding:4px 12px;font:700 12px Inter,system-ui,sans-serif;cursor:pointer}
+.donate .doge-copy:active{transform:scale(.96)}

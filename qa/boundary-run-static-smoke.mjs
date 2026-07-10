@@ -8,7 +8,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   for (const a of actions) e.action(a);
   for (let i = 0; i < 1800 && !e.finished; i++) e.tickStep();
   const proof = await e.proof();
-  if (proof.version !== 2) throw new Error('proof v2 missing');
+  if (proof.version !== 3) throw new Error('proof v3 missing');
   if (!/^[0-9a-f]{64}$/.test(proof.proof_hash)) throw new Error('proof hash is not sha256 hex');
   const v = await api.verifyProof(proof);
   if (!v.ok) throw new Error('proof verification failed: ' + (v.reason || 'unknown'));
@@ -16,7 +16,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   return proof;
 }
 
-if (api.VERSION !== '9.1.0') throw new Error('bad version');
+if (api.VERSION !== '9.2.0') throw new Error('bad version');
 if (!api.WEATHER.includes('Stable Boundary')) throw new Error('Stable Boundary missing');
 
 // Stable Boundary must be reachable for at least one deterministic seed.
@@ -36,6 +36,9 @@ const motion = new api.Engine('motion', []);
 motion.action('jump');
 motion.action('duck');
 if (motion.jumpT <= 0 || motion.duckT !== 0) throw new Error('jump+duck mutual exclusion failed');
+const rj = motion.inputs.length;
+motion.action('jump');                                  // air-jump must be a silent no-op
+if (motion.inputs.length !== rj) throw new Error('air-jump was recorded');
 
 const cases = [
   ['smoke-seed', ['C-04'], ['seal','audit','right']],
@@ -59,4 +62,27 @@ for (const c of cases) await assertRun(c[0], c[1], c[2]);
   for (let i = 1; i < mv.length; i++) if (mv[i].t === mv[i - 1].t && mv[i].a === mv[i - 1].a) throw new Error('duplicate movement input recorded at tick ' + mv[i].t);
 }
 
-console.log('Smoke OK: v9.1.0 proof replay, contracts, seed validation, weather reachability');
+// v9.2.0 invariants: ability economy + flow + set-piece fields
+{
+  const e = new api.Engine('econ', []);
+  e.action('audit'); const rec = e.inputs.length;
+  e.action('audit');                                   // on cooldown
+  if (e.inputs.length !== rec) throw new Error('cooldown no-op was recorded');
+  e.action('quarantine'); e.action('quarantine');
+  if (e.quarCharges !== 0) throw new Error('quarantine charges not consumed');
+  const before = e.inputs.length; e.action('quarantine');
+  if (e.inputs.length !== before) throw new Error('empty quarantine was recorded');
+}
+{
+  const e = new api.Engine('fields', []);
+  let g = 0; while (!e.finished && g++ < 60000) e.tickStep();
+  const r = e.result();
+  for (const k of ['combo_max', 'grazes', 'sector_reached', 'swarm', 'gate'])
+    if (!(k in r)) throw new Error('result missing ' + k);
+  if (r.sector_reached < 1 || r.sector_reached > 5) throw new Error('sector out of range');
+}
+{
+  const rej = await api.verifyProof({ version: 2 });
+  if (rej.ok || !String(rej.reason).includes('9.1.0')) throw new Error('v2 proof must be rejected with guidance');
+}
+console.log('Smoke OK: v9.2.0 proof v3 replay, ability economy, flow fields, set-pieces, legacy rejection');

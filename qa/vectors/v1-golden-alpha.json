@@ -1,0 +1,220 @@
+{
+  "version": 3,
+  "game": "Boundary Run v9",
+  "release": "9.2.0",
+  "seed": "golden-alpha",
+  "config": {
+    "contracts": [],
+    "weather": [
+      "Data Gravity",
+      "Resonance Feedback"
+    ]
+  },
+  "inputs": [
+    {
+      "t": 162,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 207,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 252,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 378,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 387,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 468,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 486,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 531,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 576,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 580,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 615,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 621,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 666,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 667,
+      "a": "branch_choice",
+      "data": "Audit Lane"
+    },
+    {
+      "t": 792,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 861,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 864,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 891,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 961,
+      "a": "throttle",
+      "data": null
+    },
+    {
+      "t": 963,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 999,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 999,
+      "a": "seal",
+      "data": null
+    },
+    {
+      "t": 1008,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1035,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1035,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1080,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1125,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1134,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1135,
+      "a": "revoke",
+      "data": null
+    },
+    {
+      "t": 1269,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1308,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1314,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1323,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1341,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1413,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1422,
+      "a": "right",
+      "data": null
+    }
+  ],
+  "branch_event": {
+    "distance": 193430,
+    "choice": "Audit Lane"
+  },
+  "result": {
+    "shards": 115,
+    "integrity_bp": 1,
+    "leakage_bp": 83,
+    "consent_bp": 88,
+    "trust_bp": 45,
+    "score": 1862,
+    "grade": "D",
+    "time_ms": 24149.034,
+    "ticks": 1449,
+    "distance_cm": 420210,
+    "corruption_level": 3,
+    "branch": "Audit Lane",
+    "combo_max": 7,
+    "grazes": 10,
+    "sector_reached": 5,
+    "swarm": "hit",
+    "gate": "clean",
+    "violations": []
+  },
+  "proof_hash": "13e930907ca3739348823f6b67d1d14851718e8a8ecb360c2602b5d66658a466"
+}

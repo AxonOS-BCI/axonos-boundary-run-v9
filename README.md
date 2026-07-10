@@ -4,8 +4,8 @@
 
 **An AxonOS Education browser game about cognitive privacy, consent, and deterministic replay proof.**
 
-[![play](https://img.shields.io/badge/play-now-6af6ff)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=910)
-[![release](https://img.shields.io/badge/release-v9.1.0-6af6ff)](https://github.com/AxonOS-BCI/axonos-boundary-run-v9/releases)
+[![play](https://img.shields.io/badge/play-now-6af6ff)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=920)
+[![release](https://img.shields.io/badge/release-v9.2.0-6af6ff)](https://github.com/AxonOS-BCI/axonos-boundary-run-v9/releases)
 [![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue)](#license)
 [![replay](https://img.shields.io/badge/replay_proof-SHA--256_verified-2ea44f)](#verify)
 [![telemetry](https://img.shields.io/badge/telemetry-none-2ea44f)](#privacy-and-safety)
@@ -29,14 +29,18 @@ Ari is not carrying a thought. Ari is carrying a choice.
 
 ## Features
 
-- Seeded deterministic level generation.
+- **Five sectors of rising pressure (v9.2.0).** Spawn density and hazard speed escalate act by act, all derived from the seed — every run is a full arc, not a flat corridor.
+- **Authored hazard formations (v9.2.0).** Spike fences with one gap, leak walls hiding a consent token in the safe lane, a vault key guarded by a spike, shard arcs that reward weaving — and **telegraphed sweeping beams** that announce their lane before they launch, then hunt across lanes.
+- **Flow combo & grazes (v9.2.0).** Shaving past a hazard one lane away, or beating it with a jump/duck/seal, feeds a ×flow combo that pays real score and bonus shards. One hit resets it. Risk is the reward.
+- **Ability economy (v9.2.0).** Audit is now a timed *pulse* on a cooldown, Quarantine carries two charges, Throttle opens a slow-time window at a latency price, Revoke cleanses consent drain. Tactics, not checkboxes — and cooldown no-ops are never written into the proof.
+- **Two set-pieces (v9.2.0).** A mid-run **Phisher Swarm** you weave through or Audit-pulse open, and a finale **Guardian Gate** consent scan: arrive with consent in order (or a live pulse) and pass clean; arrive without it and the gate is forced.
+- Seeded deterministic level generation with a daily seed.
 - Delivery Contracts: Zero Trust, Minimal Surface, No Throttle, Full Audit, Sealed Envelope.
 - Neural Weather indicators.
-- Moral branch lanes — Safe, Fast, and Audit — chosen by the player mid-run (v9.1.0); if no choice is made, the run seed decides deterministically. Either way the choice is recorded into the replay proof.
-- Enhanced Replay Proof v2: a SHA-256 proof verified by re-simulation — re-running the recorded seed and inputs reproduces the exact result, so a score cannot be claimed unless its inputs actually produce it.
-- Deterministic procedural final portrait.
-- Copy-proof button.
-- Static browser build — no telemetry, no backend, no service worker in v9.1.0.
+- Moral branch lanes — Safe, Fast, and Audit — chosen by the player mid-run; if no choice is made, the run seed decides deterministically. Either way the choice is recorded into the replay proof.
+- **Replay Proof v3**: a SHA-256 proof verified by full re-simulation — re-running the recorded seed and inputs reproduces the exact result, so a score cannot be claimed unless its inputs actually produce it. Four **golden vectors** are committed and re-simulated byte-identically in CI on every push. (Proof v2 from ≤ 9.1.0 is politely rejected with guidance.)
+- Deterministic procedural final portrait, S-grade tier for flawless flow, layered procedural soundtrack that intensifies with your combo.
+- Static browser build — no telemetry, no backend, no service worker.
 
 ## What's new in 9.1.0
 
@@ -49,7 +53,7 @@ Ari is not carrying a thought. Ari is carrying a choice.
 
 ## Play
 
-**[▶ RUN GAME — PLAY NOW](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=910)**
+**[▶ RUN GAME — PLAY NOW](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=920)**
 
 ## Controls
 

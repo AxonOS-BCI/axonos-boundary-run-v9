@@ -1,0 +1,132 @@
+{
+  "version": 3,
+  "game": "Boundary Run v9",
+  "release": "9.2.0",
+  "seed": "golden-sealed",
+  "config": {
+    "contracts": [
+      "C-05"
+    ],
+    "weather": [
+      "Resonance Feedback",
+      "Phishing Storm"
+    ]
+  },
+  "inputs": [
+    {
+      "t": 425,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 441,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 468,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 492,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 565,
+      "a": "branch_choice",
+      "data": "Fast Lane"
+    },
+    {
+      "t": 648,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 666,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 675,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 702,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 864,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 992,
+      "a": "throttle",
+      "data": null
+    },
+    {
+      "t": 1050,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1053,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1071,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1098,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1098,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 1104,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 1107,
+      "a": "left",
+      "data": null
+    }
+  ],
+  "branch_event": {
+    "distance": 163850,
+    "choice": "Fast Lane"
+  },
+  "result": {
+    "shards": 93,
+    "integrity_bp": 41,
+    "leakage_bp": 37,
+    "consent_bp": 90,
+    "trust_bp": 58,
+    "score": 3763,
+    "grade": "D",
+    "time_ms": 18565.924,
+    "ticks": 1114,
+    "distance_cm": 356000,
+    "corruption_level": 3,
+    "branch": "Fast Lane",
+    "combo_max": 17,
+    "grazes": 12,
+    "sector_reached": 5,
+    "swarm": "cleared",
+    "gate": "clean",
+    "violations": []
+  },
+  "proof_hash": "2aed4fd12917e0a82b70a90ae86ed615f7c4a542d5bd0b2606a8ecd2feca7e1f"
+}
