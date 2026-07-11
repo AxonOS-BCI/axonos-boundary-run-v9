@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.2.0",
+  "release": "9.3.0",
   "seed": "golden-flow",
   "config": {
     "contracts": [],
@@ -12,179 +12,664 @@
   },
   "inputs": [
     {
-      "t": 279,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 315,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 360,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 459,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 503,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 504,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 668,
-      "a": "audit",
-      "data": null
-    },
-    {
-      "t": 711,
-      "a": "left",
-      "data": null
-    },
-    {
       "t": 768,
-      "a": "branch_choice",
-      "data": "Safe Lane"
-    },
-    {
-      "t": 828,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 837,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 846,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 909,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 948,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 981,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1064,
-      "a": "throttle",
       "data": null
     },
     {
       "t": 1260,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1266,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1452,
       "a": "right",
       "data": null
     },
     {
-      "t": 1261,
+      "t": 1458,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1722,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 1728,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 2220,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2304,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2664,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 2670,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 2736,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2742,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2820,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 3006,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 3696,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 3936,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4050,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4056,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4398,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4404,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4524,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4524,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 4530,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4610,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 4662,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4746,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4848,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4926,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4950,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4952,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4968,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4992,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5016,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5021,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5040,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5088,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5094,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5100,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5214,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5214,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5301,
+      "a": "branch_choice",
+      "data": "Safe Lane"
+    },
+    {
+      "t": 5490,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5490,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 5502,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5622,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5628,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5742,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5742,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 5748,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5766,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6060,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6180,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6186,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6192,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6210,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6300,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6300,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 6306,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6498,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6504,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6678,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6678,
+      "a": "seal",
+      "data": null
+    },
+    {
+      "t": 6684,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6798,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6804,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6886,
+      "a": "quarantine",
+      "data": null
+    },
+    {
+      "t": 6888,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6948,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 7188,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7566,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 7686,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7692,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7758,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 7792,
+      "a": "throttle",
+      "data": null
+    },
+    {
+      "t": 8046,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 8424,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8430,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8475,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 8496,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 8502,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 8646,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8646,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8760,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 8766,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 8772,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 8808,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8814,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9012,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9018,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9019,
       "a": "revoke",
       "data": null
     },
     {
-      "t": 1377,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1404,
+      "t": 9054,
       "a": "right",
       "data": null
     },
     {
-      "t": 1404,
+      "t": 9060,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9155,
+      "a": "quarantine",
+      "data": null
+    },
+    {
+      "t": 9174,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9174,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9180,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9216,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9342,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9348,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9462,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9468,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9564,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 9576,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9630,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9810,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9816,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 9930,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9934,
+      "a": "throttle",
+      "data": null
+    },
+    {
+      "t": 9936,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 10050,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 10056,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 10242,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 10260,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 10344,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 10497,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 10512,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 10620,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 10878,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 10902,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 11022,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 11040,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 11103,
       "a": "seal",
       "data": null
     },
     {
-      "t": 1413,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1494,
+      "t": 11136,
       "a": "left",
       "data": null
     },
     {
-      "t": 1534,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 1539,
+      "t": 11256,
       "a": "left",
       "data": null
     },
     {
-      "t": 1575,
+      "t": 11262,
       "a": "right",
       "data": null
     },
     {
-      "t": 1673,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 1674,
+      "t": 11268,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 1782,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1782,
-      "a": "seal",
       "data": null
     }
   ],
   "branch_event": {
-    "distance": 222720,
+    "distance": 222642,
     "choice": "Safe Lane"
   },
   "result": {
-    "shards": 89,
-    "integrity_bp": 15,
-    "leakage_bp": 75,
-    "consent_bp": 60,
-    "trust_bp": 56,
-    "score": 1554,
+    "shards": 195,
+    "integrity_bp": 0,
+    "leakage_bp": 53,
+    "consent_bp": 46,
+    "trust_bp": 0,
+    "score": 3725,
     "grade": "D",
-    "time_ms": 30948.762,
-    "ticks": 1857,
-    "distance_cm": 484080,
+    "time_ms": 187809.154,
+    "ticks": 11269,
+    "distance_cm": 425554,
     "corruption_level": 3,
     "branch": "Safe Lane",
-    "combo_max": 10,
-    "grazes": 24,
+    "combo_max": 17,
+    "grazes": 38,
     "sector_reached": 5,
     "swarm": "hit",
-    "gate": "clean",
+    "gate": "none",
     "violations": []
   },
-  "proof_hash": "56e5d0419cc3bd42bc43725a9cbe7b9704ba77a3995ac41cb2d3a43f3ff55241"
+  "proof_hash": "5791273062122da19c562650d80e4bf5fed1bfbf92f8db9f755065389e50d02e"
 }

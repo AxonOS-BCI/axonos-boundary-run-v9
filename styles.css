@@ -1,4 +1,4 @@
-/* Boundary Run v9.2.0 — premium presentation layer.
+/* Boundary Run v9.3.0 — premium presentation layer.
    Copyright (c) 2026 Denis Yermakou / AxonOS. Apache-2.0 OR MIT. */
 
 :root {
@@ -360,7 +360,7 @@ details.proof[open] summary::before { content: "\25BE "; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-/* ── v9.2.0: flow combo, ability economy, set-piece report ── */
+/* ── Flow combo, ability economy, set-piece report ── */
 .combo-pill{position:absolute;top:14px;right:16px;z-index:4;font:800 15px Inter,system-ui,sans-serif;color:#87ffb5;background:rgba(10,20,16,.72);border:1px solid rgba(135,255,181,.45);border-radius:999px;padding:5px 13px;letter-spacing:.04em;box-shadow:0 0 18px rgba(135,255,181,.25);animation:pillIn .18s ease-out}
 .combo-pill.hot{color:#6af6ff;border-color:rgba(106,246,255,.55);box-shadow:0 0 22px rgba(106,246,255,.35)}
 @keyframes pillIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
@@ -374,7 +374,7 @@ details.proof[open] summary::before { content: "\25BE "; }
 .setpieces.bad{color:#ff7b97}
 @media (prefers-reduced-motion: reduce){.combo-pill{animation:none}}
 
-/* ── v9.2.0: touch pads + DOGE donate ── */
+/* ── Touch pads + DOGE donate ── */
 .touch-pads{position:absolute;inset:auto 0 86px 0;z-index:5;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
 .pad-cluster{display:flex;gap:10px;pointer-events:auto}
 .pad-cluster.right{flex-direction:column}
@@ -385,3 +385,11 @@ details.proof[open] summary::before { content: "\25BE "; }
 .donate code{font:700 11.5px "JetBrains Mono",ui-monospace,monospace;color:#ffd978;word-break:break-all;background:rgba(0,0,0,.35);padding:3px 7px;border-radius:8px}
 .donate .doge-copy{border:1px solid rgba(255,217,120,.5);background:rgba(255,217,120,.12);color:#ffd978;border-radius:9px;padding:4px 12px;font:700 12px Inter,system-ui,sans-serif;cursor:pointer}
 .donate .doge-copy:active{transform:scale(.96)}
+
+/* ── v9.3.0: контракт-чипы, причина смерти, крупные пады ── */
+.hud-contracts{position:absolute;top:52px;right:16px;z-index:4;display:flex;gap:6px}
+.hud-contracts .ctr{font:800 10.5px "JetBrains Mono",ui-monospace,monospace;color:#9fe8c8;border:1px solid rgba(135,255,181,.4);border-radius:8px;padding:2px 7px;background:rgba(10,20,16,.6)}
+.hud-contracts .ctr.broken{color:#ff9db1;border-color:rgba(255,79,116,.55);background:rgba(40,10,16,.6);text-decoration:line-through}
+.death-cause{margin:6px 0 0;font:600 12.5px Inter,system-ui,sans-serif;color:#ffd978}
+.touch-pads{inset:auto 0 104px 0}
+.touch-pads button{width:78px;height:78px;font-size:27px}

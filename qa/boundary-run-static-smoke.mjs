@@ -6,7 +6,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   const e = new api.Engine(seed, contracts);
   for (let i = 0; i < 80; i++) e.tickStep();
   for (const a of actions) e.action(a);
-  for (let i = 0; i < 1800 && !e.finished; i++) e.tickStep();
+  for (let i = 0; i < 120000 && !e.finished; i++) e.tickStep();   // v9.3.0 marathon: run to completion
   const proof = await e.proof();
   if (proof.version !== 3) throw new Error('proof v3 missing');
   if (!/^[0-9a-f]{64}$/.test(proof.proof_hash)) throw new Error('proof hash is not sha256 hex');
@@ -16,7 +16,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   return proof;
 }
 
-if (api.VERSION !== '9.2.0') throw new Error('bad version');
+if (api.VERSION !== '9.3.0') throw new Error('bad version');
 if (!api.WEATHER.includes('Stable Boundary')) throw new Error('Stable Boundary missing');
 
 // Stable Boundary must be reachable for at least one deterministic seed.
@@ -85,4 +85,4 @@ for (const c of cases) await assertRun(c[0], c[1], c[2]);
   const rej = await api.verifyProof({ version: 2 });
   if (rej.ok || !String(rej.reason).includes('9.1.0')) throw new Error('v2 proof must be rejected with guidance');
 }
-console.log('Smoke OK: v9.2.0 proof v3 replay, ability economy, flow fields, set-pieces, legacy rejection');
+console.log('Smoke OK: v9.3.0 proof v3 replay, ability economy, flow fields, set-pieces, legacy rejection');

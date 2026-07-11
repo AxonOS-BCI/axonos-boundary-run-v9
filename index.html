@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#05070c">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Boundary Run v9.2.0 — The Little Signal</title>
+  <title>Boundary Run v9.3.0 — The Little Signal</title>
   <meta name="description" content="Play Boundary Run v9 — AxonOS Education browser serious game about cognitive privacy, safe intent, and deterministic replay proof.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,7 +19,7 @@
       <div class="top-actions">
         <button id="muteBtn" class="chip-btn" type="button" aria-label="Toggle sound" aria-pressed="false">🔊 Sound</button>
         <button id="pauseBtn" class="chip-btn hidden" type="button" aria-label="Pause game">⏸ Pause</button>
-        <div class="version">v9.2.0</div>
+        <div class="version">v9.3.0</div>
       </div>
     </header>
 
@@ -69,6 +69,7 @@
         </div>
         <div class="weather" id="weatherPanel" aria-label="Neural weather"></div>
         <div id="comboPill" class="combo-pill hidden" aria-live="off">×2 flow</div>
+        <div id="hudContracts" class="hud-contracts" aria-label="Active contracts"></div>
         <div class="coach" id="coach">Kibo is watching the boundary.</div>
         <div id="liveStatus" class="sr-only" role="status" aria-live="polite">Kibo is watching the boundary.</div>
         <div id="branchOverlay" class="branch-overlay hidden" role="dialog" aria-label="Moral branch choice">
@@ -116,6 +117,7 @@
           <div><span>Sector</span><b id="reportSector">1/5</b></div>
         </div>
         <p id="setpieces" class="setpieces"></p>
+        <p id="deathCause" class="death-cause hidden"></p>
         <p id="sessionBest" class="session-best hidden"></p>
         <div id="violations" class="violations hidden"></div>
         <details class="proof">

@@ -1,5 +1,40 @@
 # Release Notes — Boundary Run v9
 
+## v9.3.0 — "Human Pace"
+
+Played-honest release: v9.2.0 was tuned against a 1-tick-reaction pilot bot,
+not a person. The math said so — a 9.3-second full run, 167 ms spike windows,
+a formation every 0.3–0.5 s. v9.3.0 re-times the whole world for humans and
+fixes every fairness flaw the instrumented autopsies surfaced.
+
+- **Pacing:** run 9 s → 60–75 s (five ~14 s acts); world speed ÷1.9; jump
+  150 → 417 ms with tail re-trigger (bunny-hop); ability windows rescaled;
+  weather/latency pressures re-priced per RUN (Boundary Erosion alone was
+  silently costing 77 integrity on the longer track).
+- **Fairness by construction:** corridor invariant (formation gaps chosen
+  from actual occupancy; saturated window degrades to a breather token),
+  near-uniform speeds (variance ±24 — corridors stay open downstream), one
+  sweeping beam at a time, swarm as a pure learnable rhythm wave.
+- **Set-piece truths:** an Audit fired INTO a swarm locks on for the whole
+  wave (520 ticks) — "save your Audit for the swarm" is now literal; the
+  Guardian Gate is the true final boss — beyond it, a shard-rain victory lap.
+- **Kibo's Last Spark:** one clutch auto-shield per run at integrity ≤ 15.
+- **Recovery windows:** integrity trickles back after 1.5 s clean flight;
+  leakage disperses slowly; hit costs re-priced for a marathon.
+- **Controls, third pass:** swipes fire on threshold and always beat
+  side-taps; taps resolve on release; pads enlarged; visual lane response
+  snappier; hit-stop + chromatic flash on damage.
+- **Graphics:** parallax data columns, running lane chevrons with an
+  under-Ari glow, banking/landing squash/flow ghosts, combo aura, sector
+  vignette groundwork.
+- **Interest:** named sectors, live contract chips in the HUD, branch
+  banners that explain their trade, death cause + tactical tip and
+  "S missed: …" reasons on the report.
+- **Integrity:** golden vectors regenerated for the new timings (2 full
+  survivals incl. swarm-cleared + gate-clean; 2 deterministic deaths as
+  negative coverage); the smoke harness now runs to completion (its old
+  1 880-tick window silently assumed sprint-length runs).
+
 ## v9.2.0 — "Flow & The Gate"
 
 The gameplay-depth release. The engine changes, so **replay proofs move to

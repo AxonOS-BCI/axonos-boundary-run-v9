@@ -1,14 +1,18 @@
 (function (root) {
   "use strict";
 
-  const VERSION = "9.2.0";
-  // v9.2.0 sector script: five acts of rising pressure. All integers, all
+  const VERSION = "9.3.0";
+  // Sector script: five acts of rising pressure. All integers, all
   // derived from tick/seed — the simulation stays byte-deterministic.
   const SECTORS = 5;
-  const SECTOR_INTERVAL = [56, 50, 44, 39, 34];   // base ticks between pattern spawns
-  const SECTOR_SPEED    = [0, 40, 80, 120, 160];  // centi-px/tick added to hazards
+  // v9.3.0 pacing: tuned for HUMAN reaction, not the pilot bot. A full run is
+  // ~60-75 s (five ~14 s acts); an object crosses the screen in ~1.7-2.4 s;
+  // a jump lasts 417 ms. Readable challenge over reflex lottery.
+  const SECTOR_INTERVAL = [128, 116, 104, 94, 84]; // ~3 formations alive on screen, density rising with the acts
+  const SECTOR_SPEED    = [0, 25, 50, 75, 100];   // centi-px/tick added to hazards
+  const SECTOR_NAMES = ["PERIMETER", "CACHE ALLEY", "PHISHER NETS", "STIM FIELDS", "GATE APPROACH"];
   const COOLDOWN = { audit: 600, revoke: 300, throttle: 720 };
-  const PULSE_T = 240, THROTTLE_T = 180, QUAR_T = 200, DRAIN_T = 300, SHIELD_T = 90;
+  const PULSE_T = 300, THROTTLE_T = 260, QUAR_T = 280, DRAIN_T = 420, SHIELD_T = 130;
   const MAX_SEED_LEN = 64;
   const LOGICAL_W = 1280;
   const COLLISION_LEFT_RATIO = 44 / LOGICAL_W;
@@ -113,7 +117,7 @@
       this.jumpT = 0;
       this.duckT = 0;
       this.shieldT = 0;
-      // v9.2.0 depth: flow combo, ability economy, set-pieces
+      // Depth state: flow combo, ability economy, set-pieces
       this.combo = 0;
       this.comboMax = 0;
       this.grazes = 0;
@@ -130,6 +134,8 @@
       this.swarmEndTick = 0;
       this.gate = "none";      // none | clean | forced
       this.gateSpawned = false;
+      this.sinceHit = 0;       // recovery-window clock (v9.3.0 pacing)
+      this.lastSpark = false;  // Kibo's Last Spark — one clutch save per run
     }
     pickWeather() {
       const first = WEATHER[this.seed % WEATHER.length];
@@ -160,27 +166,30 @@
       if (this.finished) return;
       if (!ACTIONS[name]) return;
       if (name === "jump") {
-        if (this.duckT > 0 || this.jumpT > 0) return;   // no air-jump, no autorepeat spam
+        if (this.duckT > 0 || this.jumpT > 6) return;   // no air-jump; tail re-trigger = bunny-hop skill
         this.record(name, null);
-        this.jumpT = 18;
+        this.jumpT = 50;
         this.message = "Ari jumped over the spike.";
         return;
       }
       if (name === "duck") {
-        if (this.jumpT > 0 || this.duckT > 0) return;
+        if (this.jumpT > 0 || this.duckT > 6) return;
         this.record(name, null);
-        this.duckT = 20;
+        this.duckT = 55;
         this.message = "Ari compressed the signal path.";
         return;
       }
-      // Ability economy (v9.2.0): windows + cooldowns instead of forever-flags.
+      // Ability economy: windows + cooldowns instead of forever-flags.
       // A call during cooldown is a deterministic no-op and is NOT recorded,
       // so proofs carry only effective inputs.
       if (name === "audit") {
         if (this.auditCd > 0) { this.message = "Audit recharging."; return; }
         this.record(name, null);
         this.auditCount++;
-        this.auditPulseT = PULSE_T; this.auditCd = COOLDOWN.audit;
+        // A pulse fired INTO an active swarm locks onto the wave and holds
+        // for its whole pass — "save your Audit for the swarm" is now literal.
+        this.auditPulseT = this.swarm === "active" ? 520 : PULSE_T;
+        this.auditCd = COOLDOWN.audit;
         this.latency = clamp(this.latency + 3, 0, 100); this.trust = clamp(this.trust + 3, 0, 100);
         this.message = "Audit Pulse: every gate in reach is inspected."; return;
       }
@@ -228,20 +237,48 @@
       this.objects.push(o);
     }
     baseSpeed(h) {
-      return 500 + ((h >>> 16) % 22) * 10 + SECTOR_SPEED[this.sector] + (this.branch === "Fast Lane" ? 120 : 0);
+      // Near-uniform flow (v9.3.0 fairness): heavy speed variance let fast
+      // objects catch slow ones mid-screen and silently close corridors that
+      // were open at spawn. Variance is now ±24 — gaps stay honest downstream.
+      return 300 + ((h >>> 16) % 4) * 8 + SECTOR_SPEED[this.sector] + (this.branch === "Fast Lane" ? 70 : 0);
     }
-    /* v9.2.0 pattern scheduler: hazards arrive as authored formations, not
+    /* Pattern scheduler: hazards arrive as authored formations, not
        lone objects. All rolls come from the seeded hash stream — deterministic. */
     spawn() {
       if (this.swarm === "active") return;                    // set-piece owns the field
+      if (this.gate !== "none") {                              // beyond the Gate: victory lap
+        const iv = 34;                                         // shard rain to the finish
+        if (this.tick - this.lastSpawn < iv) return;
+        this.lastSpawn = this.tick;
+        const h2 = hash32(`${this.seedText}:vault:${this.tick}`);
+        this.add(h2 % 5 === 0 ? "consent_token" : "shard", h2 % 3, 0, this.baseSpeed(h2));
+        return;
+      }
       const branchAdj = this.branch === "Fast Lane" ? -8 : this.branch === "Safe Lane" ? 8 : 0;
       const interval = SECTOR_INTERVAL[this.sector] + branchAdj;
       if (this.tick - this.lastSpawn < interval) return;
       this.lastSpawn = this.tick;
       const h = hash32(`${this.seedText}:${this.tick}:${this.distance}`);
-      const lane = h % 3;
       const roll = (h >>> 5) % 100;
       const sp = this.baseSpeed(h);
+      // Corridor invariant (v9.3.0): read the incoming window and pick every
+      // formation gap from ACTUAL occupancy, so the field can never assemble
+      // an unavoidable wall. Fully deterministic — occupancy is sim state.
+      const occ = [0, 0, 0];
+      for (const q of this.objects) {
+        if (q.hit || !HAZARD_TYPES.includes(q.type)) continue;
+        if (q.x > 112000) { occ[q.lane]++; if (q.sweep) { const nl = q.lane + q.sweep; occ[nl < 0 || nl > 2 ? q.lane - q.sweep : nl]++; } }
+      }
+      const freeLanes = [0, 1, 2].filter(l => occ[l] === 0);
+      const gapPick = () => freeLanes.length
+        ? freeLanes[(h >>> 13) % freeLanes.length]
+        : [0, 1, 2].reduce((a2, b2) => occ[a2] <= occ[b2] ? a2 : b2);
+      const lane = gapPick();
+      if (freeLanes.length === 0 && roll >= 40) {       // saturated window → breather
+        this.add("consent_token", lane, 0, sp);
+        return;
+      }
+      const sweepAlive = this.objects.some(q => q.sweep && !q.hit && q.type === "unsafe_stim");
       // pattern weights shift with the sector: later acts are formation-heavy
       const fenceAt = 62 + this.sector * -4;    // fences appear more often later
       const sweepAt = 78 + this.sector * -5;
@@ -250,11 +287,12 @@
         for (let i = 0; i < 5; i++) this.add("shard", 1 + dir * ((i % 4 < 2 ? i % 2 : 1 - (i % 2)) ? 1 : -1) * (i % 2), i * 70, sp);
         return;
       }
-      if (roll >= sweepAt) {                                   // telegraphed sweeping beam
+      if (roll >= sweepAt && !sweepAlive) {                    // one sweeping beam at a time
         const dir = (h >>> 9) & 1 ? 1 : -1;
-        this.add("unsafe_stim", lane, 0, sp, { warnT: 60, sweep: dir, sweepEvery: 44, sweepAt: 0 });
+        this.add("unsafe_stim", lane, 0, sp, { warnT: 60, sweep: dir, sweepEvery: 60, sweepAt: 0 });
         return;
       }
+      if (roll >= sweepAt && sweepAlive) { this.add("shard", lane, 0, sp); return; }
       if (roll >= fenceAt) {                                   // formations
         const kind = (h >>> 11) % 3;
         if (kind === 0) {                                      // spike fence, one gap
@@ -283,10 +321,16 @@
       this.swarm = "active";
       this.swarmEndTick = this.tick + 780;
       const h = hash32(this.seedText + ":swarm");
-      const sp = this.baseSpeed(h) + 40;
+      const sp = this.baseSpeed(h) + 25;
+      const base = h % 3;
       for (let i = 0; i < 8; i++) {
-        const l = (h >>> (i * 3)) % 3;
-        this.add("memory_phisher", l, 60 + i * 62, sp, i % 2 ? { swarmMark: true, sweep: (i & 2) ? 1 : -1, sweepEvery: 52, sweepAt: 0 } : { swarmMark: true });
+        // structured wave: lanes cycle base, base+1, base+2 — a moving gap is
+        // always one step behind the pattern; sweeps only on every third.
+        // pure rhythm wave: lanes cycle deterministically, no sweeps — the
+        // set-piece is a LEARNABLE beat (weave one lane behind the wave), and
+        // the Audit Pulse remains the alternative solve.
+        const l = (base + i) % 3;
+        this.add("memory_phisher", l, 70 + i * 92, sp, { swarmMark: true });
       }
       this.message = "Phisher swarm ahead. Weave, or Audit-pulse them open.";
     }
@@ -304,12 +348,14 @@
       if (o.type === "stale_consent" && this.auditPulseT > 0) { this.consent = clamp(this.consent + 2, 0, 100); this.bumpCombo(1); this.message = "Stale consent caught in the Audit Pulse."; return; }
       if (o.type === "unauthorized_app" && this.quarantineT > 0) { this.quarantineT = 0; this.shards += 4; this.bumpCombo(2); this.message = "Unauthorized app isolated in the cell."; return; }
       if (o.type === "memory_phisher" && this.auditPulseT > 0) { this.shards += 2; this.bumpCombo(1); this.message = "Phisher exposed by the Audit Pulse."; return; }
-      const damage = o.type === "raw_leak" ? 20 : o.type === "unsafe_stim" ? 18 : 10;
+      const damage = o.type === "raw_leak" ? 14 : o.type === "unsafe_stim" ? 12 : 8;
       this.integrity = clamp(this.integrity - damage, 0, 100);
-      this.leakage = clamp(this.leakage + (o.type === "raw_leak" ? 18 : 7), 0, 100);
-      this.consent = clamp(this.consent - (o.type === "stale_consent" ? 14 : 2), 0, 100);
+      this.leakage = clamp(this.leakage + (o.type === "raw_leak" ? 13 : 5), 0, 100);
+      this.consent = clamp(this.consent - (o.type === "stale_consent" ? 11 : 2), 0, 100);
       this.trust = clamp(this.trust - 8, 0, 100);
       this.corruption = clamp(this.corruption + 1, 0, 3);
+      this.sinceHit = 0;
+      this.lastHitType = o.type;
       this.combo = 0;
       if (this.swarm === "active") this.swarm = "hit";
       if (o.type === "raw_leak") this.sealMisses++;
@@ -319,15 +365,17 @@
     tickStep() {
       if (this.finished) return;
       this.tick++;
-      this.distance += this.branch === "Fast Lane" ? 350 : this.branch === "Safe Lane" ? 240 : 290;
+      this.distance += this.branch === "Fast Lane" ? 52 : this.branch === "Safe Lane" ? 34 : 42;
       if (!this.branchEvent && this.distance > Math.floor(this.length * 46 / 100)) this.branchChoice(["safe", "fast", "audit"][(this.seed >>> 12) % 3]);
-      if (this.weather.includes("Boundary Erosion") && this.tick % 100 === 0) this.integrity = clamp(this.integrity - 1, 0, 100);
-      if (this.weather.includes("Stale Consent") && this.tick % 360 === 0) this.consent = clamp(this.consent - 7, 0, 100);
-      if (this.weather.includes("Resonance Feedback") && this.throttles > 0 && this.tick % 90 === 0) this.leakage = clamp(this.leakage + 2, 0, 100);
-      if (this.tick % 50 === 0) this.latency = clamp(this.latency + 1, 0, 100);
+      // Ambient pressures are priced PER RUN, not per tick: cadences scale
+      // with the 7x longer v9.3.0 marathon so weather taxes what it always did.
+      if (this.weather.includes("Boundary Erosion") && this.tick % 700 === 0) this.integrity = clamp(this.integrity - 1, 0, 100);
+      if (this.weather.includes("Stale Consent") && this.tick % 2500 === 0) this.consent = clamp(this.consent - 7, 0, 100);
+      if (this.weather.includes("Resonance Feedback") && this.throttles > 0 && this.tick % 650 === 0) this.leakage = clamp(this.leakage + 2, 0, 100);
+      if (this.tick % 340 === 0) this.latency = clamp(this.latency + 1, 0, 100);
       // sector = act index derived purely from distance
       this.sector = clamp(Math.floor(this.distance * SECTORS / this.length), 0, SECTORS - 1);
-      // v9.2.0 timers
+      // timers
       this.jumpT = Math.max(0, this.jumpT - 1);
       this.duckT = Math.max(0, this.duckT - 1);
       this.shieldT = Math.max(0, this.shieldT - 1);
@@ -338,6 +386,18 @@
       this.throttleCd = Math.max(0, this.throttleCd - 1);
       this.quarantineT = Math.max(0, this.quarantineT - 1);
       if (this.drainT > 0) { this.drainT--; if (this.drainT % 30 === 0) this.consent = clamp(this.consent - 1, 0, 100); }
+      // Recovery windows: 2 s clean flight starts a slow integrity trickle;
+      // leakage disperses on its own, slowly. Tension breathes out — then in.
+      this.sinceHit++;
+      if (this.sinceHit > 180 && this.tick % 60 === 0) this.integrity = clamp(this.integrity + 1, 0, 100);
+      // Kibo's Last Spark: once per run, at the edge of collapse, Kibo throws
+      // everything into one second of shield. The clutch moment is a feature.
+      if (!this.lastSpark && this.integrity > 0 && this.integrity <= 15) {
+        this.lastSpark = true;
+        this.shieldT = Math.max(this.shieldT, 120);
+        this.message = "Kibo burns bright: LAST SPARK. Make it count.";
+      }
+      if (this.tick % 120 === 0) this.leakage = clamp(this.leakage - 1, 0, 100);
       // set-pieces
       if (this.swarm === "none" && this.sector >= 2) this.spawnSwarm();
       if (this.swarm === "active" && this.tick > this.swarmEndTick - 700 &&
@@ -349,7 +409,7 @@
         this.gateSpawned = true;
         // Gate speed is derived from the remaining track so the scan ALWAYS
         // arrives before the finish, on every seed and branch. Integer math.
-        const per = this.branch === "Fast Lane" ? 350 : this.branch === "Safe Lane" ? 240 : 290;
+        const per = this.branch === "Fast Lane" ? 52 : this.branch === "Safe Lane" ? 34 : 42;
         const remain = Math.max(1, this.length - this.distance);
         const need = Math.floor(122000 * per / remain) + 60;
         this.add("guardian_gate", 1, 40, Math.max(this.baseSpeed(hash32(this.seedText + ":gate")) + 300, need));
@@ -457,8 +517,9 @@
   }
 
   async function verifyProof(proof) {
-    if (proof && proof.version === 2) return { ok: false, reason: "proof v2 belongs to Boundary Run <= 9.1.0; v9.2.0 verifies proof v3" };
+    if (proof && proof.version === 2) return { ok: false, reason: "proof v2 belongs to Boundary Run <= 9.1.0; current builds verify proof v3" };
     if (!proof || proof.version !== 3) return { ok: false, reason: "unsupported proof" };
+    if (proof.release !== VERSION) return { ok: false, reason: `recorded on ${proof.release}; this build simulates ${VERSION} — timings differ` };
     const copy = JSON.parse(JSON.stringify(proof));
     const old = copy.proof_hash;
     delete copy.proof_hash;
@@ -674,8 +735,14 @@
         for (const m of [10, 15, 20]) if (s.combo >= m && p.combo < m) { toast("FLOW \u00d7" + m, "#6af6ff"); AudioKit.milestone(m); }
       }
       if (s.combo < p.combo) AudioKit.arpStop();
+      if (engine.branchEvent && !fx.branchShown) {
+        fx.branchShown = true;
+        const bx = { "Fast Lane": "FAST LANE \u2014 faster world, richer shards", "Safe Lane": "SAFE LANE \u2014 calmer world, steadier ground", "Audit Lane": "AUDIT LANE \u2014 reveal more, earn trust" };
+        banner(bx[engine.branch] || engine.branch.toUpperCase(), "#ffd978");
+        AudioKit.seal();
+      }
       if (s.sector > p.sector) {
-        banner("SECTOR " + (s.sector + 1) + " / 5", "#6af6ff");
+        banner("SECTOR " + (s.sector + 1) + " — " + SECTOR_NAMES[s.sector], "#6af6ff");
         AudioKit.drum();
         if (s.sector >= 2) AudioKit.hatsStart(); 
       }
@@ -683,8 +750,10 @@
       if (s.swarm === "cleared" && p.swarm === "active") { banner("SWARM CLEARED  +30\u25c6", "#87ffb5"); AudioKit.fanfare(true); }
       if (s.gate === "clean" && p.gate !== "clean") { banner("GATE: CONSENT VERIFIED", "#87ffb5"); AudioKit.seal(); }
       if (s.gate === "forced" && p.gate !== "forced") { banner("GATE FORCED", "#ff4f74"); flash("255,79,116"); }
+      if (engine.lastSpark && !fx.sparkShown) { fx.sparkShown = true; banner("KIBO: LAST SPARK", "#ffd978"); AudioKit.fanfare(false); flash("255,217,120"); }
       if (dmg) {
         AudioKit.arpStop();
+        if (!reducedMotion) { fx.hitStop = 7; fx.chroma = 4; }
         shake(Math.min(14, 5 + (p.integrity - s.integrity)));
         flash("255,92,122");
         AudioKit.hit();
@@ -722,6 +791,19 @@
       const cp = $("comboPill");
       if (engine.combo >= 2) { cp.classList.remove("hidden"); cp.textContent = "\u00d7" + engine.combo + " flow"; cp.classList.toggle("hot", engine.combo >= 10); }
       else cp.classList.add("hidden");
+      const cc = $("hudContracts");
+      if (cc) {
+        if (!cc.dataset.built) {
+          cc.dataset.built = "1"; cc.textContent = "";
+          for (const code of engine.contracts) {
+            const el2 = doc.createElement("span"); el2.className = "ctr"; el2.dataset.code = code;
+            el2.textContent = code; el2.title = (CONTRACTS[code] || { name: code }).name + " \u2014 " + ((CONTRACTS[code] || {}).rule || "");
+            cc.appendChild(el2);
+          }
+        }
+        const broken = new Set(engine.contractViolations().map(v => v.code));
+        cc.querySelectorAll(".ctr").forEach(ch => ch.classList.toggle("broken", broken.has(ch.dataset.code)));
+      }
       const cds = { audit: [engine.auditCd, COOLDOWN.audit], revoke: [engine.revokeCd, COOLDOWN.revoke], throttle: [engine.throttleCd, COOLDOWN.throttle] };
       doc.querySelectorAll(".actions button").forEach(b => {
         const act = b.dataset.action, c = cds[act];
@@ -820,6 +902,18 @@
         rg.addColorStop(1, "rgba(" + nc[i] + ",0)");
         ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
       }
+      const dscroll = engine ? engine.distance / 100 : t * 0.02;
+      ctx.save();
+      for (let i = 0; i < 6; i++) {
+        const cx2 = ((i * 0.19 + 0.06) * w - (dscroll * 0.4) % (w * 1.14) + w * 1.14) % (w * 1.14) - w * 0.07;
+        const cg = ctx.createLinearGradient(cx2, 0, cx2, h * 0.7);
+        cg.addColorStop(0, "rgba(106,246,255,0)"); cg.addColorStop(0.5, "rgba(106,246,255,0.05)"); cg.addColorStop(1, "rgba(106,246,255,0)");
+        ctx.fillStyle = cg; ctx.fillRect(cx2, 0, 2.5, h * 0.7);
+        for (let sy = ((t * 0.03 + i * 40) % 60); sy < h * 0.7; sy += 60) {
+          ctx.fillStyle = "rgba(106,246,255,0.10)"; ctx.fillRect(cx2 - 1.5, sy, 5.5, 3);
+        }
+      }
+      ctx.restore();
       // parallax starfields
       if (bgStarsFar) { const off = (t * 0.006) % w; ctx.globalAlpha = 0.8; ctx.drawImage(bgStarsFar, -off, 0); ctx.drawImage(bgStarsFar, w - off, 0); ctx.globalAlpha = 1; }
       if (bgStars) { const off = (t * 0.016) % w; ctx.drawImage(bgStars, -off, 0); ctx.drawImage(bgStars, w - off, 0); }
@@ -990,6 +1084,36 @@
     }
 
     function drawAri(w, h, t, alpha) {
+      const targetYb = h * laneY[engine.lane];
+      const bank = clamp((targetYb - fx.ariY) / (h * 0.24), -1, 1) * 0.22;
+      if (fx.prevJumpT > 0 && engine.jumpT === 0) fx.landSquash = 1;
+      fx.prevJumpT = engine.jumpT;
+      fx.landSquash = (fx.landSquash || 0) * 0.85;
+      if (engine.combo >= 10) {
+        for (let k = 0; k < 3; k++) {
+          const ang = t * 0.008 + k * 2.094;
+          const ox = w * 0.13 + Math.cos(ang) * w * 0.035;
+          const oy = (fx.ariY || targetYb) + Math.sin(ang) * h * 0.03;
+          ctx.save();
+      ctx.translate(w * 0.13, fx.ariY || targetYb);
+      ctx.rotate(bank);
+      ctx.scale(1 + fx.landSquash * 0.18, 1 - fx.landSquash * 0.22);
+      ctx.translate(-w * 0.13, -(fx.ariY || targetYb));
+       ctx.globalAlpha = 0.7; ctx.shadowBlur = 10; ctx.shadowColor = "#6af6ff";
+          ctx.fillStyle = "#bffaff"; ctx.beginPath(); ctx.arc(ox, oy, 2.4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        }
+      }
+      if (engine.combo >= 10 && engine.tick % 4 === 0) {
+        fx.ghosts = fx.ghosts || [];
+        fx.ghosts.push({ x: w * 0.13, y: fx.ariY || targetYb, a: 0.35 });
+        if (fx.ghosts.length > 5) fx.ghosts.shift();
+      }
+      if (fx.ghosts) for (const g of fx.ghosts) {
+        g.a *= 0.86; g.x -= w * 0.006;
+        ctx.save(); ctx.globalAlpha = Math.max(0, g.a);
+        ctx.fillStyle = "#6af6ff"; ctx.beginPath(); ctx.arc(g.x, g.y, w * 0.012, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
       const scl = Math.max(0.68, h / 720);
       const x = w * 0.13;
       const jump = engine.jumpT > 0 ? -58 * Math.sin(engine.jumpT / 18 * Math.PI) * scl : 0;
@@ -997,7 +1121,7 @@
       const target = h * laneY[engine.lane] + jump + duck;
       if (!fx.ariY) fx.ariY = target;
       const prevY = fx.ariY;
-      fx.ariY += (target - fx.ariY) * 0.38;   // snappier lane response (v9.2.0 controls)
+      fx.ariY += (target - fx.ariY) * 0.38;   // snappier lane response (snappier lane response)
       fx.ariVy = fx.ariY - prevY;
       const y = fx.ariY;
       const tilt = clamp(fx.ariVy * 0.012, -0.3, 0.3);
@@ -1142,6 +1266,30 @@
       ctx.fillText(Math.round(p * 100) + "%", bx + bw + 12, y + 8);
     }
 
+    function drawLaneFloor(w, h) {
+      if (!engine) return;
+      const sc = engine.distance / 100;
+      ctx.save();
+      for (let l = 0; l < 3; l++) {
+        const y = h * laneY[l];
+        const lg = ctx.createLinearGradient(0, y + h * 0.075, w, y + h * 0.075);
+        lg.addColorStop(0, "rgba(106,246,255,0.02)"); lg.addColorStop(0.5, "rgba(106,246,255,0.10)"); lg.addColorStop(1, "rgba(106,246,255,0.02)");
+        ctx.strokeStyle = lg; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, y + h * 0.075); ctx.lineTo(w, y + h * 0.075); ctx.stroke();
+        ctx.fillStyle = l === engine.lane ? "rgba(106,246,255,0.14)" : "rgba(106,246,255,0.055)";
+        const step = w * 0.11;
+        for (let x = -((sc * 1.6) % step); x < w + step; x += step) {
+          ctx.beginPath();
+          ctx.moveTo(x, y + h * 0.052); ctx.lineTo(x + w * 0.018, y + h * 0.064); ctx.lineTo(x, y + h * 0.076);
+          ctx.lineTo(x + w * 0.007, y + h * 0.064); ctx.closePath(); ctx.fill();
+        }
+      }
+      const ay = fx.ariY || h * laneY[engine.lane];
+      const sg = ctx.createRadialGradient(w * 0.13, ay + h * 0.06, 0, w * 0.13, ay + h * 0.06, w * 0.07);
+      sg.addColorStop(0, "rgba(106,246,255,0.16)"); sg.addColorStop(1, "rgba(106,246,255,0)");
+      ctx.fillStyle = sg; ctx.beginPath(); ctx.ellipse(w * 0.13, ay + h * 0.06, w * 0.07, h * 0.02, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
     function draw(alpha) {
       const w = canvas.width, h = canvas.height;
       const t = engine.tick * TICK_MS + alpha * TICK_MS;
@@ -1153,6 +1301,7 @@
       }
       drawBackdrop(w, h, t);
       drawLanes(w, h, t);
+      drawLaneFloor(w, h);
       engine.objects.forEach(o => drawObject(o, w, h, t, alpha));
       drawKibo(w, h, t);
       drawAri(w, h, t, alpha);
@@ -1161,6 +1310,13 @@
       drawCombo(w, h);
       drawBanner(w, h);
       drawProgress(w, h);
+      if (fx.chroma > 0) {
+        fx.chroma--;
+        ctx.save(); ctx.globalCompositeOperation = "screen";
+        ctx.fillStyle = "rgba(255,60,90,0.10)"; ctx.fillRect(-4, 0, w, h);
+        ctx.fillStyle = "rgba(60,220,255,0.10)"; ctx.fillRect(4, 0, w, h);
+        ctx.restore();
+      }
       // vignette + low-integrity pulse + hit flash
       const vg = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.42, w / 2, h / 2, Math.max(w, h) * 0.72);
       vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.42)");
@@ -1217,6 +1373,7 @@
       fx.streak = 0; fx.prev = null; fx.prevObjs.clear();
       fx.ariY = 0; fx.kiboX = 0; fx.kiboY = 0; fx.shakeT = 0; fx.flashA = 0;
       fx.comboPulse = 0; fx.banner = null;
+      fx.hitStop = 0; fx.chroma = 0; fx.ghosts = null; fx.prevJumpT = 0; fx.landSquash = 0; fx.sparkShown = false; fx.branchShown = false;
       lastMsg = ""; paused = false; acc = 0; lastFrame = 0;
       menu.classList.add("hidden"); report.classList.add("hidden"); gamePanel.classList.remove("hidden");
       $("pauseBtn").classList.remove("hidden");
@@ -1275,7 +1432,7 @@
       if (k === "arrowdown" || k === "s") engine.action("duck");
       if (k === "1") engine.action("audit"); if (k === "2") engine.action("revoke"); if (k === "3") engine.action("throttle"); if (k === "4") engine.action("seal"); if (k === "5") engine.action("quarantine");
     });
-    /* ── v9.2.0 controls: everything fires on pointerDOWN / first movement,
+    /* ── Controls: everything fires on pointerDOWN / first movement,
        never on release. Latency is one frame, not one gesture. ── */
     const act = name => { if (engine && !paused && !engine.finished) engine.action(name); };
     // on-screen pads (touch devices)
@@ -1289,18 +1446,26 @@
     canvas.addEventListener("pointerdown", e => {
       e.preventDefault(); AudioKit.resume();
       const r = canvas.getBoundingClientRect();
-      const rx = (e.clientX - r.left) / Math.max(1, r.width);
-      ptr = { x: e.clientX, y: e.clientY, used: false };
-      if (rx < 0.34) { act("left"); ptr.used = true; }
-      else if (rx > 0.66) { act("right"); ptr.used = true; }
+      ptr = { x: e.clientX, y: e.clientY, rx: (e.clientX - r.left) / Math.max(1, r.width), t: performance.now(), used: false };
     }, { passive: false });
     canvas.addEventListener("pointermove", e => {
+      // swipes win, instantly, in any zone (18 px vertical / 24 px horizontal)
       if (!ptr || ptr.used) return;
       const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
-      if (Math.abs(dy) > 24 && Math.abs(dy) > Math.abs(dx)) { act(dy < 0 ? "jump" : "duck"); ptr.used = true; }
-      else if (Math.abs(dx) > 30) { act(dx < 0 ? "left" : "right"); ptr.used = true; }
+      if (Math.abs(dy) > 18 && Math.abs(dy) > Math.abs(dx)) { act(dy < 0 ? "jump" : "duck"); ptr.used = true; }
+      else if (Math.abs(dx) > 24) { act(dx < 0 ? "left" : "right"); ptr.used = true; }
     }, { passive: true });
-    canvas.addEventListener("pointerup", () => { ptr = null; });
+    canvas.addEventListener("pointerup", e => {
+      // a TAP (short, barely moved) resolves on release: side thirds = lane
+      if (ptr && !ptr.used) {
+        const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
+        if (performance.now() - ptr.t < 260 && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+          if (ptr.rx < 0.4) act("left");
+          else if (ptr.rx > 0.6) act("right");
+        }
+      }
+      ptr = null;
+    });
     canvas.addEventListener("pointercancel", () => { ptr = null; });
     canvas.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
 
@@ -1336,6 +1501,31 @@
       $("reportGrazes").textContent = proof.result.grazes;
       $("reportSector").textContent = proof.result.sector_reached + "/5";
       med.classList.toggle("s", proof.result.grade === "S");
+      const TIP = {
+        raw_leak: "Raw leaks want your Seal \u2014 or an empty lane. Keys are earned mid-run.",
+        stale_consent: "Stale consent drains you after the hit \u2014 Revoke cleans it; an Audit Pulse pre-empts it.",
+        artifact_spike: "Spikes are jumped \u2014 watch the \u26a0 telegraph and time the arc.",
+        unsafe_stim: "Beams are ducked \u2014 sweeping ones announce their lane first.",
+        unauthorized_app: "Arm a Quarantine cell before contact \u2014 two charges per run.",
+        memory_phisher: "Phishers fold to an Audit Pulse; in a swarm, ride one lane behind the wave."
+      };
+      const dc = $("deathCause");
+      if (dc) {
+        if (proof.result.integrity_bp <= 0 && engine.lastHitType) {
+          dc.textContent = "Felled by: " + engine.lastHitType.replace(/_/g, " ") + " \u2014 " + (TIP[engine.lastHitType] || "");
+          dc.classList.remove("hidden");
+        } else if (proof.result.grade !== "S") {
+          const r = proof.result, miss = [];
+          if (r.integrity_bp < 96) miss.push("integrity " + r.integrity_bp + " < 96");
+          if (r.leakage_bp >= 6) miss.push("leakage " + r.leakage_bp + " \u2265 6");
+          if (r.combo_max < 12) miss.push("flow \u00d7" + r.combo_max + " < \u00d712");
+          if (r.gate === "forced") miss.push("gate forced");
+          if (r.swarm === "hit") miss.push("swarm breached");
+          if (r.violations && r.violations.length) miss.push("contract broken");
+          dc.textContent = miss.length ? "S missed: " + miss.join(" \u00b7 ") : "";
+          dc.classList.toggle("hidden", !miss.length);
+        } else { dc.textContent = "FLAWLESS FLOW."; dc.classList.remove("hidden"); }
+      }
       const sp = $("setpieces");
       const swTxt = proof.result.swarm === "cleared" ? "Swarm cleared" : proof.result.swarm === "hit" ? "Swarm breached" : "Swarm not reached";
       const gtTxt = proof.result.gate === "clean" ? "Gate: consent verified" : proof.result.gate === "forced" ? "Gate forced" : "Gate not reached";
@@ -1381,6 +1571,7 @@
       try {
         if (!lastFrame) lastFrame = now;
         if (!paused) {
+          if (fx.hitStop > 0) { fx.hitStop--; lastFrame = now; draw(1); rafId = root.requestAnimationFrame(frame); return; }
           acc = Math.min(acc + (now - lastFrame), TICK_MS * 6);
           while (acc >= TICK_MS && !engine.finished) {
             engine.tickStep();
