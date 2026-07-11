@@ -1,5 +1,25 @@
 # Release Notes — Boundary Run v9
 
+## v9.3.1 — "Playable"
+
+Phone-feel hotfix, driven by live-device autopsy of "the game is
+uncontrollable":
+
+- **Zoom was eating your taps.** The viewport allowed double-tap /
+  pinch zoom, so rapid lane taps zoomed the page mid-run. Now
+  `maximum-scale=1, user-scalable=no`, `touch-action: manipulation` on
+  every button, and text selection disabled on the stage.
+- **Abilities fire on PRESS.** The five ability buttons moved from
+  click (release) to pointerdown — panic taps land the instant your
+  finger does.
+- **Wider tap forgiveness.** Lane taps accept up to 18 px of finger
+  roll and 350 ms; side zones widened to 42 %.
+- **Page locked while playing.** html/body scroll and overscroll are
+  disabled during a run; pads respect the safe-area inset.
+- Contract chips now rebuild per run and show correct tooltips
+  (array-lookup bug); the procedural portrait is injected without
+  innerHTML (family zero-innerHTML standard restored).
+
 ## v9.3.0 — "Human Pace"
 
 Played-honest release: v9.2.0 was tuned against a 1-tick-reaction pilot bot,

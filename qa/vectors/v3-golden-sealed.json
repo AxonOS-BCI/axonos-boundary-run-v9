@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.3.0",
+  "release": "9.3.1",
   "seed": "golden-sealed",
   "config": {
     "contracts": [
@@ -330,5 +330,5 @@
       "C-05"
     ]
   },
-  "proof_hash": "f7ed633633ff5353793294636d06b6cffed5dce78f83819ad84ff4bc4a09112b"
+  "proof_hash": "708475576b4c6d5f0f7ff1e66138c7b2bb1db1b44c2c68faea8edfc87564f374"
 }

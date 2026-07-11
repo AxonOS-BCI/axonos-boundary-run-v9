@@ -1,4 +1,4 @@
-/* Boundary Run v9.3.0 — premium presentation layer.
+/* Boundary Run v9.3.1 — premium presentation layer.
    Copyright (c) 2026 Denis Yermakou / AxonOS. Apache-2.0 OR MIT. */
 
 :root {
@@ -386,10 +386,16 @@ details.proof[open] summary::before { content: "\25BE "; }
 .donate .doge-copy{border:1px solid rgba(255,217,120,.5);background:rgba(255,217,120,.12);color:#ffd978;border-radius:9px;padding:4px 12px;font:700 12px Inter,system-ui,sans-serif;cursor:pointer}
 .donate .doge-copy:active{transform:scale(.96)}
 
-/* ── v9.3.0: контракт-чипы, причина смерти, крупные пады ── */
+/* ── Контракт-чипы, причина смерти, крупные пады ── */
 .hud-contracts{position:absolute;top:52px;right:16px;z-index:4;display:flex;gap:6px}
 .hud-contracts .ctr{font:800 10.5px "JetBrains Mono",ui-monospace,monospace;color:#9fe8c8;border:1px solid rgba(135,255,181,.4);border-radius:8px;padding:2px 7px;background:rgba(10,20,16,.6)}
 .hud-contracts .ctr.broken{color:#ff9db1;border-color:rgba(255,79,116,.55);background:rgba(40,10,16,.6);text-decoration:line-through}
 .death-cause{margin:6px 0 0;font:600 12.5px Inter,system-ui,sans-serif;color:#ffd978}
 .touch-pads{inset:auto 0 104px 0}
 .touch-pads button{width:78px;height:78px;font-size:27px}
+
+/* ── v9.3.1 "Playable": телефонные жесты под замком ── */
+html.playing, html.playing body{overflow:hidden;overscroll-behavior:none;height:100%}
+button, .chip-btn, .run-btn{touch-action:manipulation}
+.stage{user-select:none;-webkit-user-select:none}
+.touch-pads{inset:auto 0 calc(104px + env(safe-area-inset-bottom, 0px)) 0}

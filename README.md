@@ -4,8 +4,8 @@
 
 **An AxonOS Education browser game about cognitive privacy, consent, and deterministic replay proof.**
 
-[![play](https://img.shields.io/badge/play-now-6af6ff)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=930)
-[![release](https://img.shields.io/badge/release-v9.3.0-6af6ff)](https://github.com/AxonOS-BCI/axonos-boundary-run-v9/releases)
+[![play](https://img.shields.io/badge/play-now-6af6ff)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=931)
+[![release](https://img.shields.io/badge/release-v9.3.1-6af6ff)](https://github.com/AxonOS-BCI/axonos-boundary-run-v9/releases)
 [![license](https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue)](#license)
 [![replay](https://img.shields.io/badge/replay_proof-SHA--256_verified-2ea44f)](#verify)
 [![telemetry](https://img.shields.io/badge/telemetry-none-2ea44f)](#privacy-and-safety)
@@ -29,11 +29,12 @@ Ari is not carrying a thought. Ari is carrying a choice.
 
 ## Features
 
-- **Human pacing (v9.3.0).** A full run is now a ~60–75 s five-act arc (was a 9-second blur): objects cross the screen in 1.7–2.4 s, a jump lasts 417 ms, and integrity slowly regenerates in clean-flight windows. Weather and ambient pressures are priced per run, not per tick.
-- **A field that never lies (v9.3.0).** The spawner enforces a corridor invariant — every formation's gap is chosen from actual lane occupancy, speeds are near-uniform so gaps stay open downstream, and only one sweeping beam exists at a time. If the window saturates, you get a breather token instead of a wall.
-- **Kibo's Last Spark (v9.3.0).** Once per run, at the edge of collapse, Kibo burns everything into one second of shield. Make the clutch count.
-- **Beyond the Gate: the victory lap (v9.3.0).** The Guardian Gate is the true final boss — pass its consent scan and the boundary opens: shards and tokens rain to the finish.
-- **Controls, third pass (v9.3.0).** Swipes fire the instant a threshold is crossed and always beat side-taps; taps resolve on release; bigger on-screen pads; keyboard ignores autorepeat.
+- **Playable on phones.** Pinch/double-tap zoom is disabled during play, every ability fires on *press* (not release), tap windows widened, page scroll locked while running, and safe-area-aware pads.
+- **Human pacing.** A full run is now a ~60–75 s five-act arc (was a 9-second blur): objects cross the screen in 1.7–2.4 s, a jump lasts 417 ms, and integrity slowly regenerates in clean-flight windows. Weather and ambient pressures are priced per run, not per tick.
+- **A field that never lies.** The spawner enforces a corridor invariant — every formation's gap is chosen from actual lane occupancy, speeds are near-uniform so gaps stay open downstream, and only one sweeping beam exists at a time. If the window saturates, you get a breather token instead of a wall.
+- **Kibo's Last Spark.** Once per run, at the edge of collapse, Kibo burns everything into one second of shield. Make the clutch count.
+- **Beyond the Gate: the victory lap.** The Guardian Gate is the true final boss — pass its consent scan and the boundary opens: shards and tokens rain to the finish.
+- **Controls, third pass.** Swipes fire the instant a threshold is crossed and always beat side-taps; taps resolve on release; bigger on-screen pads; keyboard ignores autorepeat.
 - **Five sectors of rising pressure.** Spawn density and hazard speed escalate act by act, all derived from the seed — every run is a full arc, not a flat corridor.
 - **Authored hazard formations.** Spike fences with one gap, leak walls hiding a consent token in the safe lane, a vault key guarded by a spike, shard arcs that reward weaving — and **telegraphed sweeping beams** that announce their lane before they launch, then hunt across lanes.
 - **Flow combo & grazes.** Shaving past a hazard one lane away, or beating it with a jump/duck/seal, feeds a ×flow combo that pays real score and bonus shards. One hit resets it. Risk is the reward.
@@ -58,7 +59,7 @@ Ari is not carrying a thought. Ari is carrying a choice.
 
 ## Play
 
-**[▶ RUN GAME — PLAY NOW](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=930)**
+**[▶ RUN GAME — PLAY NOW](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=931)**
 
 ## Controls
 

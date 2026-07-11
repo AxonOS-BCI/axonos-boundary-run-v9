@@ -1,11 +1,11 @@
 (function (root) {
   "use strict";
 
-  const VERSION = "9.3.0";
+  const VERSION = "9.3.1";
   // Sector script: five acts of rising pressure. All integers, all
   // derived from tick/seed — the simulation stays byte-deterministic.
   const SECTORS = 5;
-  // v9.3.0 pacing: tuned for HUMAN reaction, not the pilot bot. A full run is
+  // Pacing: tuned for HUMAN reaction, not the pilot bot. A full run is
   // ~60-75 s (five ~14 s acts); an object crosses the screen in ~1.7-2.4 s;
   // a jump lasts 417 ms. Readable challenge over reflex lottery.
   const SECTOR_INTERVAL = [128, 116, 104, 94, 84]; // ~3 formations alive on screen, density rising with the acts
@@ -134,7 +134,7 @@
       this.swarmEndTick = 0;
       this.gate = "none";      // none | clean | forced
       this.gateSpawned = false;
-      this.sinceHit = 0;       // recovery-window clock (v9.3.0 pacing)
+      this.sinceHit = 0;       // recovery-window clock
       this.lastSpark = false;  // Kibo's Last Spark — one clutch save per run
     }
     pickWeather() {
@@ -237,7 +237,7 @@
       this.objects.push(o);
     }
     baseSpeed(h) {
-      // Near-uniform flow (v9.3.0 fairness): heavy speed variance let fast
+      // Near-uniform flow: heavy speed variance let fast
       // objects catch slow ones mid-screen and silently close corridors that
       // were open at spawn. Variance is now ±24 — gaps stay honest downstream.
       return 300 + ((h >>> 16) % 4) * 8 + SECTOR_SPEED[this.sector] + (this.branch === "Fast Lane" ? 70 : 0);
@@ -261,7 +261,7 @@
       const h = hash32(`${this.seedText}:${this.tick}:${this.distance}`);
       const roll = (h >>> 5) % 100;
       const sp = this.baseSpeed(h);
-      // Corridor invariant (v9.3.0): read the incoming window and pick every
+      // Corridor invariant: read the incoming window and pick every
       // formation gap from ACTUAL occupancy, so the field can never assemble
       // an unavoidable wall. Fully deterministic — occupancy is sim state.
       const occ = [0, 0, 0];
@@ -368,7 +368,7 @@
       this.distance += this.branch === "Fast Lane" ? 52 : this.branch === "Safe Lane" ? 34 : 42;
       if (!this.branchEvent && this.distance > Math.floor(this.length * 46 / 100)) this.branchChoice(["safe", "fast", "audit"][(this.seed >>> 12) % 3]);
       // Ambient pressures are priced PER RUN, not per tick: cadences scale
-      // with the 7x longer v9.3.0 marathon so weather taxes what it always did.
+      // with the 7x longer marathon so weather taxes what it always did.
       if (this.weather.includes("Boundary Erosion") && this.tick % 700 === 0) this.integrity = clamp(this.integrity - 1, 0, 100);
       if (this.weather.includes("Stale Consent") && this.tick % 2500 === 0) this.consent = clamp(this.consent - 7, 0, 100);
       if (this.weather.includes("Resonance Feedback") && this.throttles > 0 && this.tick % 650 === 0) this.leakage = clamp(this.leakage + 2, 0, 100);
@@ -797,7 +797,8 @@
           cc.dataset.built = "1"; cc.textContent = "";
           for (const code of engine.contracts) {
             const el2 = doc.createElement("span"); el2.className = "ctr"; el2.dataset.code = code;
-            el2.textContent = code; el2.title = (CONTRACTS[code] || { name: code }).name + " \u2014 " + ((CONTRACTS[code] || {}).rule || "");
+            const meta = CONTRACTS.find(c2 => c2.id === code) || { name: code, rule: "" };
+            el2.textContent = code; el2.title = meta.name + " \u2014 " + meta.rule;
             cc.appendChild(el2);
           }
         }
@@ -1374,6 +1375,7 @@
       fx.ariY = 0; fx.kiboX = 0; fx.kiboY = 0; fx.shakeT = 0; fx.flashA = 0;
       fx.comboPulse = 0; fx.banner = null;
       fx.hitStop = 0; fx.chroma = 0; fx.ghosts = null; fx.prevJumpT = 0; fx.landSquash = 0; fx.sparkShown = false; fx.branchShown = false;
+      const cc0 = $("hudContracts"); if (cc0) { cc0.dataset.built = ""; cc0.textContent = ""; }
       lastMsg = ""; paused = false; acc = 0; lastFrame = 0;
       menu.classList.add("hidden"); report.classList.add("hidden"); gamePanel.classList.remove("hidden");
       $("pauseBtn").classList.remove("hidden");
@@ -1382,6 +1384,7 @@
       const sw = $("swipeHint");
       const isTouch = "ontouchstart" in root || (root.navigator && root.navigator.maxTouchPoints > 0);
       $("touchPads").classList.toggle("hidden", !isTouch);
+      doc.documentElement.classList.add("playing");
       if (isTouch) { sw.classList.remove("hidden"); root.setTimeout(() => sw.classList.add("hidden"), 5200); }
       renderWeather();
       AudioKit.resume(); AudioKit.startPad();
@@ -1395,6 +1398,7 @@
       report.classList.add("hidden"); gamePanel.classList.add("hidden");
       $("pauseBtn").classList.add("hidden");
       $("touchPads").classList.add("hidden");
+      doc.documentElement.classList.remove("playing");
       menu.classList.remove("hidden");
     };
     $("pauseBtn").onclick = () => setPaused(!paused);
@@ -1407,7 +1411,10 @@
     };
     doc.addEventListener("visibilitychange", () => { if (doc.hidden && engine && !engine.finished) setPaused(true); });
 
-    doc.querySelectorAll(".actions button").forEach(b => b.onclick = () => { if (engine && !paused) engine.action(b.dataset.action); });
+    doc.querySelectorAll(".actions button").forEach(b => {
+      b.addEventListener("pointerdown", e => { e.preventDefault(); AudioKit.resume(); if (engine && !paused) engine.action(b.dataset.action); }, { passive: false });
+      b.addEventListener("contextmenu", e => e.preventDefault());
+    });
     doc.querySelectorAll("#branchOverlay .branch-opts button").forEach(b => b.onclick = () => {
       if (!engine || engine.branchEvent || paused) return;
       engine.branchChoice(b.dataset.branch);
@@ -1459,9 +1466,9 @@
       // a TAP (short, barely moved) resolves on release: side thirds = lane
       if (ptr && !ptr.used) {
         const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
-        if (performance.now() - ptr.t < 260 && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
-          if (ptr.rx < 0.4) act("left");
-          else if (ptr.rx > 0.6) act("right");
+        if (performance.now() - ptr.t < 350 && Math.abs(dx) < 18 && Math.abs(dy) < 18) {
+          if (ptr.rx < 0.42) act("left");
+          else if (ptr.rx > 0.58) act("right");
         }
       }
       ptr = null;
@@ -1533,7 +1540,8 @@
       sp.className = "setpieces " + (proof.result.swarm === "cleared" && proof.result.gate === "clean" ? "good" : proof.result.swarm === "hit" || proof.result.gate === "forced" ? "bad" : "");
       $("reportHash").textContent = proof.proof_hash.slice(0, 12);
       $("proofBox").value = JSON.stringify(proof, null, 2);
-      $("portrait").innerHTML = portrait(proof.proof_hash, proof.result.integrity_bp);
+      { const svgDoc = new root.DOMParser().parseFromString(portrait(proof.proof_hash, proof.result.integrity_bp), "image/svg+xml");
+        $("portrait").replaceChildren(svgDoc.documentElement); }
       const sb = $("sessionBest");
       if (!sessionBest || proof.result.score > sessionBest) {
         sessionBest = proof.result.score;
