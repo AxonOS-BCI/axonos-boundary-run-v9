@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.3.1",
+  "release": "9.4.0",
   "seed": "golden-flow",
   "config": {
     "contracts": [],
@@ -12,43 +12,33 @@
   },
   "inputs": [
     {
-      "t": 768,
+      "t": 1024,
       "a": "right",
       "data": null
     },
     {
-      "t": 1260,
+      "t": 1328,
       "a": "left",
       "data": null
     },
     {
-      "t": 1266,
+      "t": 1329,
       "a": "left",
       "data": null
     },
     {
-      "t": 1452,
+      "t": 1536,
       "a": "right",
       "data": null
     },
     {
-      "t": 1458,
-      "a": "right",
+      "t": 1536,
+      "a": "jump",
       "data": null
     },
     {
-      "t": 1722,
+      "t": 1782,
       "a": "left",
-      "data": null
-    },
-    {
-      "t": 1728,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2220,
-      "a": "right",
       "data": null
     },
     {
@@ -57,77 +47,72 @@
       "data": null
     },
     {
-      "t": 2664,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2670,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2736,
+      "t": 2413,
       "a": "right",
       "data": null
     },
     {
-      "t": 2742,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2820,
+      "t": 2619,
       "a": "left",
       "data": null
     },
     {
-      "t": 3006,
-      "a": "left",
+      "t": 2778,
+      "a": "jump",
       "data": null
     },
     {
-      "t": 3696,
+      "t": 2783,
       "a": "right",
       "data": null
     },
     {
-      "t": 3936,
+      "t": 2850,
+      "a": "seal",
+      "data": null
+    },
+    {
+      "t": 2994,
       "a": "left",
       "data": null
     },
     {
-      "t": 4050,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 4056,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 4398,
+      "t": 3210,
       "a": "left",
       "data": null
     },
     {
-      "t": 4404,
+      "t": 3798,
       "a": "right",
       "data": null
     },
     {
-      "t": 4524,
+      "t": 4070,
       "a": "left",
       "data": null
     },
     {
-      "t": 4524,
+      "t": 4146,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4147,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4550,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4550,
       "a": "duck",
       "data": null
     },
     {
-      "t": 4530,
+      "t": 4551,
       "a": "left",
       "data": null
     },
@@ -137,83 +122,8 @@
       "data": null
     },
     {
-      "t": 4662,
+      "t": 4909,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 4746,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 4848,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 4926,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 4950,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 4952,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 4968,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 4992,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5016,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5021,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5040,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5088,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5094,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5100,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5214,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5214,
-      "a": "left",
       "data": null
     },
     {
@@ -222,428 +132,148 @@
       "data": "Safe Lane"
     },
     {
-      "t": 5490,
+      "t": 5355,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5519,
       "a": "right",
       "data": null
     },
     {
-      "t": 5490,
+      "t": 5519,
       "a": "duck",
       "data": null
     },
     {
-      "t": 5502,
+      "t": 5520,
       "a": "right",
       "data": null
     },
     {
-      "t": 5622,
+      "t": 5528,
       "a": "left",
       "data": null
     },
     {
-      "t": 5628,
+      "t": 5841,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6685,
       "a": "left",
       "data": null
     },
     {
-      "t": 5742,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5742,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 5748,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5766,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6060,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6180,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6186,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6192,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6210,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6300,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6300,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 6306,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6498,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6504,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6678,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6678,
-      "a": "seal",
-      "data": null
-    },
-    {
-      "t": 6684,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6798,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6804,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6886,
-      "a": "quarantine",
-      "data": null
-    },
-    {
-      "t": 6888,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6948,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7188,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7566,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7686,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7692,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7758,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7792,
-      "a": "throttle",
-      "data": null
-    },
-    {
-      "t": 8046,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 8424,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8430,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8475,
+      "t": 6685,
       "a": "jump",
       "data": null
     },
     {
-      "t": 8496,
+      "t": 6686,
       "a": "left",
       "data": null
     },
     {
-      "t": 8502,
+      "t": 7423,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 7491,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 7641,
       "a": "left",
       "data": null
     },
     {
-      "t": 8646,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8646,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8760,
+      "t": 7641,
       "a": "jump",
       "data": null
     },
     {
-      "t": 8766,
+      "t": 7642,
       "a": "left",
       "data": null
     },
     {
-      "t": 8772,
+      "t": 7797,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 8206,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8530,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 8829,
       "a": "left",
       "data": null
     },
     {
-      "t": 8808,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8814,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9012,
+      "t": 8830,
       "a": "left",
       "data": null
     },
     {
-      "t": 9018,
+      "t": 9069,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 9285,
       "a": "left",
       "data": null
     },
     {
-      "t": 9019,
-      "a": "revoke",
-      "data": null
-    },
-    {
-      "t": 9054,
+      "t": 9633,
       "a": "right",
       "data": null
     },
     {
-      "t": 9060,
+      "t": 9634,
       "a": "right",
       "data": null
     },
     {
-      "t": 9155,
-      "a": "quarantine",
-      "data": null
-    },
-    {
-      "t": 9174,
+      "t": 10210,
       "a": "left",
       "data": null
     },
     {
-      "t": 9174,
+      "t": 10210,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 11364,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 11435,
       "a": "left",
       "data": null
     },
     {
-      "t": 9180,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9216,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9342,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 9348,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 9462,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9468,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9564,
-      "a": "audit",
-      "data": null
-    },
-    {
-      "t": 9576,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 9630,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9810,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 9816,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 9930,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 9934,
-      "a": "throttle",
-      "data": null
-    },
-    {
-      "t": 9936,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 10050,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 10056,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 10242,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 10260,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 10344,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 10497,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 10512,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 10620,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 10878,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 10902,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 11022,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 11040,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 11103,
+      "t": 11435,
       "a": "seal",
       "data": null
     },
     {
-      "t": 11136,
+      "t": 11436,
       "a": "left",
-      "data": null
-    },
-    {
-      "t": 11256,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 11262,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 11268,
-      "a": "right",
       "data": null
     }
   ],
@@ -652,24 +282,24 @@
     "choice": "Safe Lane"
   },
   "result": {
-    "shards": 195,
-    "integrity_bp": 0,
-    "leakage_bp": 53,
-    "consent_bp": 46,
-    "trust_bp": 0,
-    "score": 3725,
-    "grade": "D",
-    "time_ms": 187809.154,
-    "ticks": 11269,
-    "distance_cm": 425554,
+    "shards": 470,
+    "integrity_bp": 96,
+    "leakage_bp": 0,
+    "consent_bp": 87,
+    "trust_bp": 100,
+    "score": 11978,
+    "grade": "S",
+    "time_ms": 216458.008,
+    "ticks": 12988,
+    "distance_cm": 484000,
     "corruption_level": 3,
     "branch": "Safe Lane",
-    "combo_max": 17,
-    "grazes": 38,
+    "combo_max": 68,
+    "grazes": 56,
     "sector_reached": 5,
-    "swarm": "hit",
-    "gate": "none",
+    "swarm": "cleared",
+    "gate": "clean",
     "violations": []
   },
-  "proof_hash": "148d87270bc90f41fdd70375358db869329ed2ad15af19352205cc39aabb9e57"
+  "proof_hash": "0e7bd0cc5d5c670d4aa944bc1f644fd401714b7dd73a2c35f4f5207ab118d3d3"
 }

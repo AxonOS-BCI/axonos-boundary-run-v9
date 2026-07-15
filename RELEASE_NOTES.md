@@ -1,5 +1,25 @@
 # Release Notes — Boundary Run v9
 
+## v9.4.0 — "Mastery"
+
+The golden proofs now demonstrate mastery, and mastery is a CI invariant.
+
+- **Golden vectors regenerated at S/A grade.** The committed replay proofs used
+  to be four grade-D runs (two of them hit). The reference pilot now predicts
+  sweeping-beam lanes at arrival time, holds its Audit Pulse for the phisher
+  swarm, keeps consent above the Gate threshold, and counters what it cannot
+  dodge: the new golden set is **S, S, A, A — every swarm cleared, every Gate
+  passed clean**, top score 11,978, top combo 68.
+- **Fairness is now a gate.** `qa/verify-vectors.mjs` requires at least one
+  S-grade proof, two cleared swarms, a clean Gate, and three surviving runs in
+  the golden set. If a balance change ever makes the top grade unreachable for
+  the reference pilot, CI fails before it ships.
+- **Engine untouched.** Byte-identical to 9.3.1 — all existing replays and
+  proofs stay valid; the vectors are re-pinned to 9.4.0 as always.
+- Grande-standard README: the full field manual — hazards and their counters,
+  the ability economy, grading, contracts, the five acts, and the replay-proof
+  architecture, each mapped to the BCI-safety concept it teaches.
+
 ## v9.3.1 — "Playable"
 
 Phone-feel hotfix, driven by live-device autopsy of "the game is

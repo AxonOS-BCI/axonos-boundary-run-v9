@@ -1,7 +1,7 @@
 (function (root) {
   "use strict";
 
-  const VERSION = "9.3.1";
+  const VERSION = "9.4.0";
   // Sector script: five acts of rising pressure. All integers, all
   // derived from tick/seed — the simulation stays byte-deterministic.
   const SECTORS = 5;

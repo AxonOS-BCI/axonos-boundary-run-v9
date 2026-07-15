@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.3.1",
+  "release": "9.4.0",
   "seed": "golden-audit",
   "config": {
     "contracts": [
@@ -14,122 +14,42 @@
   },
   "inputs": [
     {
-      "t": 666,
+      "t": 1596,
       "a": "left",
       "data": null
     },
     {
-      "t": 918,
+      "t": 1918,
       "a": "right",
       "data": null
     },
     {
-      "t": 984,
+      "t": 1978,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2682,
       "a": "left",
       "data": null
     },
     {
-      "t": 1074,
-      "a": "right",
+      "t": 2682,
+      "a": "seal",
       "data": null
     },
     {
-      "t": 1464,
+      "t": 2683,
       "a": "left",
       "data": null
     },
     {
-      "t": 1584,
+      "t": 2790,
       "a": "right",
       "data": null
     },
     {
-      "t": 1590,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1704,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1704,
-      "a": "duck",
-      "data": null
-    },
-    {
-      "t": 1710,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1734,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1770,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1884,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1902,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1992,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2004,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2124,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2130,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2244,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2250,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2478,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2484,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2700,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2820,
+      "t": 2914,
       "a": "right",
       "data": null
     },
@@ -139,52 +59,12 @@
       "data": null
     },
     {
-      "t": 3168,
+      "t": 3262,
       "a": "left",
       "data": null
     },
     {
-      "t": 3174,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3408,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3432,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3456,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3459,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3480,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3498,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3522,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3528,
+      "t": 3263,
       "a": "left",
       "data": null
     },
@@ -194,288 +74,118 @@
       "data": "Safe Lane"
     },
     {
-      "t": 3550,
+      "t": 3923,
       "a": "right",
       "data": null
     },
     {
-      "t": 3575,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3690,
+      "t": 4147,
       "a": "left",
       "data": null
     },
     {
-      "t": 3918,
+      "t": 4385,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 4797,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5106,
       "a": "left",
       "data": null
     },
     {
-      "t": 4548,
+      "t": 5107,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5294,
       "a": "right",
       "data": null
     },
     {
-      "t": 4554,
+      "t": 5295,
       "a": "right",
       "data": null
     },
     {
-      "t": 4637,
+      "t": 5401,
       "a": "seal",
       "data": null
     },
     {
-      "t": 4644,
+      "t": 5498,
       "a": "left",
       "data": null
     },
     {
-      "t": 4716,
+      "t": 5499,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6266,
       "a": "right",
       "data": null
     },
     {
-      "t": 5016,
+      "t": 6577,
       "a": "left",
       "data": null
     },
     {
-      "t": 5022,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5052,
+      "t": 6733,
       "a": "right",
       "data": null
     },
     {
-      "t": 5058,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5171,
-      "a": "jump",
-      "data": null
-    },
-    {
-      "t": 5172,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5178,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5208,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5424,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5706,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5706,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 5826,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5832,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 5963,
-      "a": "audit",
-      "data": null
-    },
-    {
-      "t": 5976,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6318,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6339,
-      "a": "throttle",
-      "data": null
-    },
-    {
-      "t": 6438,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6444,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 6558,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 6564,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7116,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7122,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7170,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7176,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7241,
-      "a": "seal",
-      "data": null
-    },
-    {
-      "t": 7284,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7452,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7482,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7488,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 7551,
-      "a": "audit",
-      "data": null
-    },
-    {
-      "t": 7602,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7602,
+      "t": 6733,
       "a": "duck",
       "data": null
     },
     {
-      "t": 7608,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7614,
-      "a": "seal",
-      "data": null
-    },
-    {
-      "t": 7644,
+      "t": 6734,
       "a": "right",
       "data": null
     },
     {
-      "t": 7650,
+      "t": 7016,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7016,
+      "a": "duck",
+      "data": null
+    },
+    {
+      "t": 7017,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7384,
       "a": "right",
       "data": null
     },
     {
-      "t": 7955,
-      "a": "throttle",
-      "data": null
-    },
-    {
-      "t": 7968,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7974,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 7975,
-      "a": "revoke",
-      "data": null
-    },
-    {
-      "t": 8190,
+      "t": 7385,
       "a": "right",
       "data": null
     },
     {
-      "t": 8196,
+      "t": 7611,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 7800,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 8226,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 8232,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 8616,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 8622,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 8675,
-      "a": "throttle",
       "data": null
     }
   ],
@@ -484,26 +194,24 @@
     "choice": "Safe Lane"
   },
   "result": {
-    "shards": 145,
-    "integrity_bp": 44,
-    "leakage_bp": 39,
-    "consent_bp": 71,
-    "trust_bp": 15,
-    "score": 3267,
-    "grade": "D",
+    "shards": 183,
+    "integrity_bp": 89,
+    "leakage_bp": 8,
+    "consent_bp": 78,
+    "trust_bp": 93,
+    "score": 9025,
+    "grade": "A",
     "time_ms": 144910.87,
     "ticks": 8695,
     "distance_cm": 324022,
     "corruption_level": 3,
     "branch": "Safe Lane",
-    "combo_max": 15,
-    "grazes": 19,
+    "combo_max": 46,
+    "grazes": 35,
     "sector_reached": 5,
     "swarm": "cleared",
     "gate": "clean",
-    "violations": [
-      "C-04"
-    ]
+    "violations": []
   },
-  "proof_hash": "10acc88174d85239104bb8265091ccb2e6407e679916323746b47c77ea25a12c"
+  "proof_hash": "c137099b722d91fbea3c6ec9eced1ea3f84bebf3f938d8867ef534da5c877868"
 }

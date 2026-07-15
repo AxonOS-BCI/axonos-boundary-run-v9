@@ -10,7 +10,7 @@ const dir = new URL('./vectors/', import.meta.url);
 const files = readdirSync(dir).filter(f => f.endsWith('.json')).sort();
 if (files.length < 4) throw new Error(`expected >=4 golden vectors, found ${files.length}`);
 
-let gatesResolved = 0, swarmCleared = 0, successes = 0;
+let gatesResolved = 0, swarmCleared = 0, successes = 0, sGrades = 0;
 for (const f of files) {
   const p = JSON.parse(readFileSync(new URL(f, dir), 'utf8'));
   if (p.version !== 3) throw new Error(`${f}: proof version ${p.version}, expected 3`);
@@ -21,9 +21,13 @@ for (const f of files) {
   if (p.result.gate !== 'none') gatesResolved++;
   if (p.result.swarm === 'cleared') swarmCleared++;
   if (p.result.integrity_bp > 0) successes++;
+  if (p.result.grade === 'S') sGrades++;
   console.log(`ok ${f}  grade=${p.result.grade} score=${p.result.score} swarm=${p.result.swarm} gate=${p.result.gate}`);
 }
-if (successes < 2) throw new Error('golden set must contain at least 2 surviving runs');
+if (successes < 3) throw new Error('golden set must contain at least 3 surviving runs');
 if (gatesResolved < 1) throw new Error('golden set must exercise the Guardian Gate');
-if (swarmCleared < 1) throw new Error('golden set must contain a cleared swarm');
+if (swarmCleared < 2) throw new Error('golden set must contain at least 2 cleared swarms');
+// Fairness invariant: the top grade must stay REACHABLE. If a balance change
+// makes S impossible for the reference pilot, this fails before it ships.
+if (sGrades < 1) throw new Error('golden set must contain at least one S-grade run — S must stay reachable');
 console.log(`Vectors OK: ${files.length} golden proofs re-simulated byte-identically on v${api.VERSION}`);

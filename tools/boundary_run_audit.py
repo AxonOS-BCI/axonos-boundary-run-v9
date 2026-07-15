@@ -8,7 +8,7 @@ if missing:
     raise SystemExit("missing files: " + ", ".join(missing))
 content_files = ["index.html", "app.js", "styles.css", "README.md", "VERSION", "PRIVACY_NOTICE.md", "SECURITY.md", "CRYPTO_PAYMENT_TERMS.md", "COMMERCIAL_LICENSE.md", "THIRD_PARTY_NOTICES.md"]
 text = "\n".join((root/p).read_text(errors="ignore") for p in content_files)
-for phrase in ["Boundary Run v9", "v9.3.1", "Ari", "Kibo", "RUN GAME", "Replay Proof", "Dogecoin", "DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp", "Not a medical device", "No telemetry", "Content-Security-Policy"]:
+for phrase in ["Boundary Run v9", "v9.4.0", "Ari", "Kibo", "RUN GAME", "Replay Proof", "Dogecoin", "DMwHAhqVNWf7dyEznukxCufNS5rjuP5MTp", "Not a medical device", "No telemetry", "Content-Security-Policy"]:
     if phrase not in text:
         raise SystemExit(f"required phrase missing: {phrase}")
 for bad in ["v7.9.812", "v8.0.1", "v8.8.4", "v7.3.0", "v9.0.0", "v9.1.0", "v9.2.0", "v9.3.0", "ABI v3", "unstick-ui", "serviceWorker.register", "gtag(", "XMLHttpRequest", "navigator.sendBeacon"]:
@@ -21,4 +21,4 @@ for phrase in ["crypto.subtle.digest(\"SHA-256\"", "async function hashProof", "
     if phrase not in app:
         raise SystemExit(f"required implementation marker missing: {phrase}")
 subprocess.run(["node", "--check", str(root/"app.js")], check=True)
-print("Audit OK: v9.3.1 security, deterministic hardening, CI/CD and no stale markers")
+print("Audit OK: v9.4.0 security, deterministic hardening, CI/CD and no stale markers")

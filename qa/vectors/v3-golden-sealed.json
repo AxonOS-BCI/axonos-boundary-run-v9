@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.3.1",
+  "release": "9.4.0",
   "seed": "golden-sealed",
   "config": {
     "contracts": [
@@ -14,192 +14,72 @@
   },
   "inputs": [
     {
-      "t": 684,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 762,
+      "t": 1119,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 768,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 882,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 888,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 900,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 966,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1002,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1008,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1152,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 1314,
-      "a": "left",
       "data": null
     },
     {
       "t": 1398,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 1536,
       "a": "left",
       "data": null
     },
     {
-      "t": 1920,
-      "a": "right",
+      "t": 1604,
+      "a": "quarantine",
       "data": null
     },
     {
-      "t": 1926,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2064,
+      "t": 1606,
       "a": "left",
       "data": null
     },
     {
-      "t": 2098,
+      "t": 1990,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 1991,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 2250,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 2251,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 2426,
       "a": "jump",
       "data": null
     },
     {
-      "t": 2118,
+      "t": 2449,
       "a": "right",
       "data": null
     },
     {
-      "t": 2136,
+      "t": 2686,
       "a": "left",
       "data": null
     },
     {
-      "t": 2142,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2256,
+      "t": 3042,
       "a": "right",
       "data": null
     },
     {
-      "t": 2262,
+      "t": 3043,
       "a": "right",
       "data": null
     },
     {
-      "t": 2316,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2322,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2388,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2478,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2826,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2827,
-      "a": "revoke",
-      "data": null
-    },
-    {
-      "t": 2832,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 2940,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2946,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 2982,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3000,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3180,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3186,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3300,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3306,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3360,
+      "t": 3390,
       "a": "left",
       "data": null
     },
@@ -209,58 +89,23 @@
       "data": null
     },
     {
-      "t": 3408,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3648,
+      "t": 3419,
       "a": "right",
       "data": null
     },
     {
-      "t": 3732,
+      "t": 3430,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 3514,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 3718,
       "a": "right",
-      "data": null
-    },
-    {
-      "t": 3750,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3756,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3774,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3816,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3822,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3828,
-      "a": "left",
-      "data": null
-    },
-    {
-      "t": 3846,
-      "a": "right",
-      "data": null
-    },
-    {
-      "t": 3894,
-      "a": "left",
       "data": null
     },
     {
@@ -269,38 +114,78 @@
       "data": "Fast Lane"
     },
     {
-      "t": 4002,
+      "t": 4281,
       "a": "right",
       "data": null
     },
     {
-      "t": 4002,
-      "a": "seal",
-      "data": null
-    },
-    {
-      "t": 4008,
+      "t": 4394,
       "a": "left",
       "data": null
     },
     {
-      "t": 4098,
+      "t": 4665,
       "a": "right",
       "data": null
     },
     {
-      "t": 4104,
+      "t": 4821,
+      "a": "quarantine",
+      "data": null
+    },
+    {
+      "t": 4849,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 4993,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 5161,
       "a": "right",
       "data": null
     },
     {
-      "t": 4224,
+      "t": 5161,
+      "a": "jump",
+      "data": null
+    },
+    {
+      "t": 5162,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 5722,
       "a": "left",
       "data": null
     },
     {
-      "t": 4308,
+      "t": 5723,
       "a": "left",
+      "data": null
+    },
+    {
+      "t": 5859,
+      "a": "audit",
+      "data": null
+    },
+    {
+      "t": 6090,
+      "a": "right",
+      "data": null
+    },
+    {
+      "t": 6263,
+      "a": "left",
+      "data": null
+    },
+    {
+      "t": 6758,
+      "a": "right",
       "data": null
     }
   ],
@@ -309,26 +194,24 @@
     "choice": "Fast Lane"
   },
   "result": {
-    "shards": 56,
-    "integrity_bp": 0,
-    "leakage_bp": 67,
-    "consent_bp": 90,
-    "trust_bp": 0,
-    "score": 766,
-    "grade": "D",
-    "time_ms": 71813.794,
-    "ticks": 4309,
-    "distance_cm": 185068,
-    "corruption_level": 3,
+    "shards": 187,
+    "integrity_bp": 100,
+    "leakage_bp": 0,
+    "consent_bp": 100,
+    "trust_bp": 99,
+    "score": 8883,
+    "grade": "S",
+    "time_ms": 126611.602,
+    "ticks": 7597,
+    "distance_cm": 356044,
+    "corruption_level": 2,
     "branch": "Fast Lane",
-    "combo_max": 10,
-    "grazes": 8,
-    "sector_reached": 3,
-    "swarm": "hit",
-    "gate": "none",
-    "violations": [
-      "C-05"
-    ]
+    "combo_max": 39,
+    "grazes": 43,
+    "sector_reached": 5,
+    "swarm": "cleared",
+    "gate": "clean",
+    "violations": []
   },
-  "proof_hash": "708475576b4c6d5f0f7ff1e66138c7b2bb1db1b44c2c68faea8edfc87564f374"
+  "proof_hash": "5fbf638b914dd94713d2e9477bcf6da35b32bccdd646072e52d7a618908b176a"
 }
