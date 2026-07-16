@@ -1,5 +1,32 @@
 # Release Notes — Boundary Run v9
 
+## v9.5.0 — "In Hand"
+
+Controls, made right. Two release-blocking bugs and the feel-layer above them.
+
+- **The game froze on the first hit.** The hit-stop frame path assigned to an
+  undeclared `rafId` — a strict-mode ReferenceError that killed the render loop
+  the first time you took damage (for everyone without reduced-motion). One
+  identifier; the whole game. Fixed.
+- **The five ability buttons did nothing.** The Audit / Revoke / Throttle /
+  Seal / Quarantine toolbar was never wired to the engine — on a phone (no
+  1–5 keys) abilities were unreachable: no sealing leaks, no swarm pulse, no
+  Gate prep. Wired, firing on **press**, same latency contract as the pads.
+- **Ability buttons now carry their own state** — a live cooldown veil drains
+  over Audit/Revoke/Throttle, and Seal/Quarantine show their real charge
+  counts. A no-op press now *looks* like a cooldown, not a broken button.
+- **Input buffer (engine, replay-safe).** A jump/duck pressed during the
+  lockout tail is queued for ~200 ms and fires the instant its window opens —
+  pressed-slightly-early is intent, not an error. Buffered presses are
+  recorded only when they fire, so proofs still carry only effective inputs
+  and replays stay byte-identical; an expired buffer records nothing. Pinned
+  by new smoke invariants.
+- **Center tap = jump** — the middle tap zone used to eat taps; one-thumb play
+  is now complete. Horizontal swipe threshold 24→20 px for parity with
+  vertical.
+- Golden vectors re-pinned to 9.5.0 — byte-identical results (S, S, A, A), as
+  the buffer is purely additive for inputs that never hit a lockout.
+
 ## v9.4.0 — "Mastery"
 
 The golden proofs now demonstrate mastery, and mastery is a CI invariant.

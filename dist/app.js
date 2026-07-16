@@ -1,7 +1,7 @@
 (function (root) {
   "use strict";
 
-  const VERSION = "9.4.0";
+  const VERSION = "9.5.0";
   // Sector script: five acts of rising pressure. All integers, all
   // derived from tick/seed — the simulation stays byte-deterministic.
   const SECTORS = 5;
@@ -136,6 +136,14 @@
       this.gateSpawned = false;
       this.sinceHit = 0;       // recovery-window clock
       this.lastSpark = false;  // Kibo's Last Spark — one clutch save per run
+      // Input buffer (v9.5): a jump/duck pressed during the lockout tail is
+      // QUEUED for up to 12 ticks (~200 ms) and fires the moment its window
+      // opens — pressed-slightly-early is intent, not an error. Buffered
+      // presses are recorded only when they FIRE (via action(), at the fire
+      // tick), so proofs still carry only effective inputs and replays stay
+      // byte-identical. An expired buffer records nothing.
+      this.jumpBuf = 0;
+      this.duckBuf = 0;
     }
     pickWeather() {
       const first = WEATHER[this.seed % WEATHER.length];
@@ -166,14 +174,14 @@
       if (this.finished) return;
       if (!ACTIONS[name]) return;
       if (name === "jump") {
-        if (this.duckT > 0 || this.jumpT > 6) return;   // no air-jump; tail re-trigger = bunny-hop skill
+        if (this.duckT > 0 || this.jumpT > 6) { this.jumpBuf = 12; return; }   // queued: fires when the window opens
         this.record(name, null);
         this.jumpT = 50;
         this.message = "Ari jumped over the spike.";
         return;
       }
       if (name === "duck") {
-        if (this.jumpT > 0 || this.duckT > 6) return;
+        if (this.jumpT > 0 || this.duckT > 6) { this.duckBuf = 12; return; }
         this.record(name, null);
         this.duckT = 55;
         this.message = "Ari compressed the signal path.";
@@ -364,6 +372,10 @@
     }
     tickStep() {
       if (this.finished) return;
+      // pop the input buffer through the normal action path (records at THIS
+      // tick, pre-increment — byte-identical on replay)
+      if (this.jumpBuf > 0) { this.jumpBuf--; if (this.duckT === 0 && this.jumpT <= 6) { this.jumpBuf = 0; this.action("jump"); } }
+      if (this.duckBuf > 0) { this.duckBuf--; if (this.jumpT === 0 && this.duckT <= 6) { this.duckBuf = 0; this.action("duck"); } }
       this.tick++;
       this.distance += this.branch === "Fast Lane" ? 52 : this.branch === "Safe Lane" ? 34 : 42;
       if (!this.branchEvent && this.distance > Math.floor(this.length * 46 / 100)) this.branchChoice(["safe", "fast", "audit"][(this.seed >>> 12) % 3]);
@@ -788,6 +800,20 @@
       $("hudShards").textContent = engine.shards;
       $("hudKeys").textContent = engine.vaultKeys;
       $("hudSector").textContent = (engine.sector + 1) + "/5";
+      // ability buttons: live cooldown veil + charge counts (v9.5 "In Hand")
+      const CDMAX = { audit: 600, revoke: 300, throttle: 720 };
+      doc.querySelectorAll(".actions button[data-action]").forEach(b => {
+        const a = b.dataset.action;
+        let frac = 0, dead = false;
+        if (a === "audit") frac = engine.auditCd / CDMAX.audit;
+        else if (a === "revoke") frac = engine.revokeCd / CDMAX.revoke;
+        else if (a === "throttle") frac = engine.throttleCd / CDMAX.throttle;
+        else if (a === "seal") { dead = engine.vaultKeys <= 0; const c = b.querySelector(".charge"); if (c) c.textContent = engine.vaultKeys; }
+        else if (a === "quarantine") { dead = engine.quarCharges <= 0; const c = b.querySelector(".charge"); if (c) c.textContent = engine.quarCharges; }
+        b.style.setProperty("--cd", String(Math.max(0, Math.min(1, frac))));
+        b.classList.toggle("cd", frac > 0.01);
+        b.classList.toggle("dead", dead);
+      });
       const cp = $("comboPill");
       if (engine.combo >= 2) { cp.classList.remove("hidden"); cp.textContent = "\u00d7" + engine.combo + " flow"; cp.classList.toggle("hot", engine.combo >= 10); }
       else cp.classList.add("hidden");
@@ -1443,6 +1469,11 @@
        never on release. Latency is one frame, not one gesture. ── */
     const act = name => { if (engine && !paused && !engine.finished) engine.action(name); };
     // on-screen pads (touch devices)
+    // ability toolbar: fire on PRESS, same latency contract as the pads
+    doc.querySelectorAll(".actions button[data-action]").forEach(b => {
+      b.addEventListener("pointerdown", e => { e.preventDefault(); AudioKit.resume(); act(b.dataset.action); }, { passive: false });
+      b.addEventListener("contextmenu", e => e.preventDefault());
+    });
     doc.querySelectorAll("#touchPads button").forEach(b => {
       b.addEventListener("pointerdown", e => { e.preventDefault(); AudioKit.resume(); act(b.dataset.move); }, { passive: false });
       b.addEventListener("contextmenu", e => e.preventDefault());
@@ -1460,7 +1491,7 @@
       if (!ptr || ptr.used) return;
       const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
       if (Math.abs(dy) > 18 && Math.abs(dy) > Math.abs(dx)) { act(dy < 0 ? "jump" : "duck"); ptr.used = true; }
-      else if (Math.abs(dx) > 24) { act(dx < 0 ? "left" : "right"); ptr.used = true; }
+      else if (Math.abs(dx) > 20) { act(dx < 0 ? "left" : "right"); ptr.used = true; }
     }, { passive: true });
     canvas.addEventListener("pointerup", e => {
       // a TAP (short, barely moved) resolves on release: side thirds = lane
@@ -1469,6 +1500,7 @@
         if (performance.now() - ptr.t < 350 && Math.abs(dx) < 18 && Math.abs(dy) < 18) {
           if (ptr.rx < 0.42) act("left");
           else if (ptr.rx > 0.58) act("right");
+          else act("jump");                       // center tap = jump: one-thumb play
         }
       }
       ptr = null;
@@ -1579,7 +1611,7 @@
       try {
         if (!lastFrame) lastFrame = now;
         if (!paused) {
-          if (fx.hitStop > 0) { fx.hitStop--; lastFrame = now; draw(1); rafId = root.requestAnimationFrame(frame); return; }
+          if (fx.hitStop > 0) { fx.hitStop--; lastFrame = now; draw(1); raf = requestAnimationFrame(frame); return; }
           acc = Math.min(acc + (now - lastFrame), TICK_MS * 6);
           while (acc >= TICK_MS && !engine.finished) {
             engine.tickStep();

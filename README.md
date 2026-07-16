@@ -7,8 +7,8 @@
 **Ari is not carrying a thought. Ari is carrying a choice.**
 *Protect the choice. Protect the person.*
 
-[![play](https://img.shields.io/badge/▶_RUN_GAME-now-6af6ff?style=flat-square)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=940)
-[![release](https://img.shields.io/badge/release-v9.4.0_·_Mastery-6af6ff?style=flat-square)](RELEASE_NOTES.md)
+[![play](https://img.shields.io/badge/▶_RUN_GAME-now-6af6ff?style=flat-square)](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=950)
+[![release](https://img.shields.io/badge/release-v9.5.0_·_In_Hand-6af6ff?style=flat-square)](RELEASE_NOTES.md)
 [![replay](https://img.shields.io/badge/Replay_Proof-SHA--256_·_re--simulated_in_CI-2ea44f?style=flat-square)](#-replay-proof--every-run-is-a-verifiable-artifact)
 [![fairness](https://img.shields.io/badge/fairness-S_grade_reachable_·_CI_invariant-2ea44f?style=flat-square)](#-fair-by-construction--and-provably-so)
 [![telemetry](https://img.shields.io/badge/telemetry-none-2ea44f?style=flat-square)](#-privacy-and-safety)
@@ -151,7 +151,9 @@ One or two conditions per run, derived from the seed, priced per run:
 | Pause | P / Esc | ⏸ |
 | Mute | M | 🔇 |
 
-Phone-first: abilities fire on **press** (not release), pinch/double-tap zoom is disabled during play, page scroll is locked while running, pads are safe-area-aware, keyboard ignores autorepeat.
+**Tap center of the field = Jump** — full one-thumb play. **Pressed slightly early?** Jump/Duck are buffered ~200 ms and fire the instant their window opens. **Ability buttons carry their own state** — a cooldown veil drains in real time; Seal/Quarantine show live charges.
+
+Phone-first: pads *and the ability toolbar* fire on **press** (not release), pinch/double-tap zoom is disabled during play, page scroll is locked while running, pads are safe-area-aware, keyboard ignores autorepeat.
 
 ---
 
@@ -220,7 +222,7 @@ tools/boundary_run_audit.py             CI: security & claim audit
 
 ## ▶️ Play
 
-**[RUN GAME →](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=940)** — or locally:
+**[RUN GAME →](https://axonos-bci.github.io/axonos-boundary-run-v9/?v=950)** — or locally:
 
 ```bash
 git clone https://github.com/AxonOS-BCI/axonos-boundary-run-v9

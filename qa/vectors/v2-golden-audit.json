@@ -1,7 +1,7 @@
 {
   "version": 3,
   "game": "Boundary Run v9",
-  "release": "9.4.0",
+  "release": "9.5.0",
   "seed": "golden-audit",
   "config": {
     "contracts": [
@@ -213,5 +213,5 @@
     "gate": "clean",
     "violations": []
   },
-  "proof_hash": "c137099b722d91fbea3c6ec9eced1ea3f84bebf3f938d8867ef534da5c877868"
+  "proof_hash": "d961daa234cc628e4dba863be98e95a5965c5934ff1d48867c5f9d148c37a3d7"
 }

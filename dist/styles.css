@@ -399,3 +399,12 @@ html.playing, html.playing body{overflow:hidden;overscroll-behavior:none;height:
 button, .chip-btn, .run-btn{touch-action:manipulation}
 .stage{user-select:none;-webkit-user-select:none}
 .touch-pads{inset:auto 0 calc(104px + env(safe-area-inset-bottom, 0px)) 0}
+
+/* ── v9.5 "In Hand": ability buttons carry their own state ── */
+.actions button{position:relative;overflow:hidden}
+.actions button::after{content:"";position:absolute;left:0;right:0;bottom:0;top:0;
+  background:rgba(6,12,24,.72);transform-origin:top;transform:scaleY(var(--cd,0));
+  transition:transform .12s linear;pointer-events:none}
+.actions button.cd{filter:saturate(.55)}
+.actions button.dead{opacity:.38;filter:grayscale(.7)}
+.actions button:active{transform:translateY(1px) scale(.98)}

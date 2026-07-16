@@ -16,7 +16,7 @@ async function assertRun(seed, contracts = [], actions = []) {
   return proof;
 }
 
-if (api.VERSION !== '9.4.0') throw new Error('bad version');
+if (api.VERSION !== '9.5.0') throw new Error('bad version');
 if (!api.WEATHER.includes('Stable Boundary')) throw new Error('Stable Boundary missing');
 
 // Stable Boundary must be reachable for at least one deterministic seed.
@@ -85,4 +85,29 @@ for (const c of cases) await assertRun(c[0], c[1], c[2]);
   const rej = await api.verifyProof({ version: 2 });
   if (rej.ok || !String(rej.reason).includes('9.1.0')) throw new Error('v2 proof must be rejected with guidance');
 }
-console.log('Smoke OK: v9.4.0 proof v3 replay, ability economy, flow fields, set-pieces, legacy rejection');
+
+// v9.5 "In Hand" — the input buffer contract: a jump/duck pressed in the
+// lockout TAIL is queued and fires the moment its window opens (recorded at
+// the FIRE tick); a press too early expires and records NOTHING.
+{
+  const e = new api.Engine('buffer', []);
+  e.action('jump');
+  for (let i = 0; i < 40; i++) e.tickStep();
+  const rec = e.inputs.length;
+  e.action('jump');                                       // blocked -> queued
+  if (e.inputs.length !== rec) throw new Error('buffered press recorded at press time');
+  for (let i = 0; i < 8; i++) e.tickStep();               // window opens -> fires
+  if (e.inputs.filter(x => x.a === 'jump').length !== 2) throw new Error('buffered jump did not fire');
+  if (e.jumpT < 40) throw new Error('buffered jump did not restart the arc');
+  const e2 = new api.Engine('buffer-exp', []);
+  e2.action('jump'); e2.tickStep();
+  e2.action('jump');                                      // too early: expires silently
+  for (let i = 0; i < 25; i++) e2.tickStep();
+  if (e2.inputs.filter(x => x.a === 'jump').length !== 1) throw new Error('expired buffer was recorded');
+  let g = 0;                                              // proofs verify only FINISHED runs
+  while (!e.finished && g++ < 120000) e.tickStep();
+  const pr = await e.proof(); const vv = await api.verifyProof(pr);
+  if (!vv.ok) throw new Error('buffered-run replay failed: ' + vv.reason);
+}
+
+console.log('Smoke OK: v9.5.0 proof v3 replay, ability economy, flow fields, set-pieces, legacy rejection');
