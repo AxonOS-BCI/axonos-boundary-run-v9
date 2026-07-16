@@ -61,10 +61,10 @@ jobs:
             --title "Boundary Run $TAG — The Little Signal" \
             --notes-file BODY.md $LATEST
       - name: Verify the Release exists
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          TAG="${{ steps.tag.outputs.tag }}"
-          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
-            --json tagName,isLatest \
-            --jq '"verified: " + .tagName + " latest=" + (.isLatest | tostring)'
+  env:
+    GH_TOKEN: ${{ github.token }}
+  run: |
+    TAG="${{ steps.tag.outputs.tag }}"
+    gh release view "$TAG" --repo "$GITHUB_REPOSITORY" \
+      --json tagName,url \
+      --jq '"verified: " + .tagName + " -> " + .url'
